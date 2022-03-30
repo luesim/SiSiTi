@@ -30,8 +30,12 @@ body {
 
 .ul li{
     float: left;
+    padding-right: 20px;
 }
-
+.link{
+    text-decoration: none;
+    color: black;
+}
 
 footer{
     width: 100%;
