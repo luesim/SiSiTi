@@ -62,7 +62,7 @@ header{
 .schwarzUnten{
     width: 100%;
     background-color: black;
-    height: 5%;
+    padding-top: 20px;
 }
 
 footer{
