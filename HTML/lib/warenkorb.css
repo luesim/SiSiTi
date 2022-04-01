@@ -1,0 +1,31 @@
+.eingaben {
+    padding: 16px;
+    text-align: left;
+    padding: 20px;
+    
+    
+  }
+  
+  button {
+    background-color: #3c3d3d;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  
+fieldset{
+    text-align: left;
+}
+
+h1{
+    text-align: left;
+}
