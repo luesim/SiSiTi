@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>SiSiTi</title>
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
-        <link rel="stylesheet" type="text/css" href="lib/hochladen.css">
+        <link rel="stylesheet" type="text/css" href="lib/hochladenMitBild.css">
 	</head>
 	<body>
         <header>
@@ -55,13 +55,14 @@
                     </table>
                 </div>
                 <div class="hochladen">
-                    <div class="auswahl">
-                        Bild zum Hochladen hier ablegen
-                        <br><br><br><br>
-                        <form>
-                            <input type="button" value="Datei auswählen">
-                        </form>
-                    </div>
+                    <img src="pics/bildBeispiel.jpg" width="400" height="250" class="bild" alt="Bild">
+                    <table width="60%" height="50px" class="buttonBild">
+                        <tr>
+                            <td><input type="button" value="Löschen"></td>
+                            <td><input type="button" value="Anderes Bild auswählen"></td>
+                            <td><input type="button" value="Hochladen"></td>
+                        </tr>
+                    </table>
                 </div>
             </section>
         </main>

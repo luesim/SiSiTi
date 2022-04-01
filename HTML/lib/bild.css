@@ -9,6 +9,7 @@ main{
 
 
 .bildDiv{
+    position: relative;
     text-align: center;
     margin: 3vh 0 0 0;
 }
@@ -17,7 +18,13 @@ main{
     border-style: double;
 }
 
+.bildinformationenUeberschrift{
+    margin-bottom:1%; 
+    text-align: left;
+}
+
 .bildinformationen{
+    position: absolute;
     text-align: left;
     list-style-type: none;
     display: inline-block;
