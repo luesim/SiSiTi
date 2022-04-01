@@ -1,0 +1,33 @@
+main{
+    height: 65vh;
+}
+
+.inhalt{
+    margin: 3vh 20vh 3vh 20vh;
+    border-style: solid;
+}
+
+.bildDiv{
+    text-align: center;
+    margin: 3vh 0 0 0;
+}
+
+.bild{
+    border-style: double;
+}
+
+.buttonsLeft{
+    margin: 5vh 0 0 0;
+    text-align: center;
+    width:50%;
+    float: left;
+    font-size: 20px;
+}
+
+.buttonsRight{
+    margin: 5vh 0 0 0;
+    text-align: center;
+    width:50%;
+    float: right;
+    font-size: 20px;
+}
