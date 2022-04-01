@@ -1,0 +1,38 @@
+.signup {
+    width: 40%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid rgb(3, 3, 3);
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #3c3d3d;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  .eingaben {
+    padding: 1vw;
+    text-align: center;
+    padding: 1vw;
+    margin-top: 7vh;
+    margin-left: 30vw;
+    margin-right: 30vw;
+    border: 1px solid rgb(3, 3, 3);
+    
+  }
+  
+  .signuptext {
+    color:#4f5050;
+    
+  }
