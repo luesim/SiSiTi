@@ -24,12 +24,27 @@ section.logo{
 section.desc {
     padding: 15px;
     text-align: center;
+    
 }
 
-.Hauptbild{
-    position: relative;
-    top:50%;
+section.desc:hover{
+    border:1px solid #777;
 }
-#Titelbild{
-    max-height: 100px;
+
+.banner{
+    background-image: url(../pics/Beispiele/Bsp22.jpg);
+    height: 200px;
+    background-size:cover;
+}
+.bannertext p{
+    height: 100%;
+    color: White;
+    text-align: center;
+    display: grid;
+    align-items: center;
+    margin: auto;
+    font-size: xx-large;
+}
+.bannertext{
+    height: 100%;
 }
