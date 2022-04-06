@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>SiSiTi</title>
+		<link rel="stylesheet" type="text/css" href="lib/basic.css">
+        <link rel="stylesheet" type="text/css" href="lib/hochladen.css">
+	</head>
+	<body>
+        <header>
+            <div class="logo">
+                <a href="home.html"> <img src="pics/Logo.png" width="175" height="75" alt="SiSiTi"> </a>
+            </div>
+            <nav class="nav">
+                <table width="100%" height="70px">
+                    <tr>
+                        <td class="suchfeldLinksAbstand" width="98%">
+                            <form class="suchfeldHoehe">
+                                <input type="text" class="suchfeld" placeholder="Suche"> <input class="button" type="button"  value="Suche">
+                            </form>
+                        </td>
+                        <td class="symbol" width="1%">
+                            <a title="Zip" href="zip.html" class="link"> <img src="pics/zip.png" width="40" height="40" alt="Zip"> </a>
+                        </td>
+                        <td class="symbol" width="1%">
+                            <a title="Anmelden" href="anmelden.html" class="link"> <img src="pics/login.png" width="40" height="40" alt="Login"> </a>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+            <div class="schwarz">
+            </div>
+        </header>
+        <main>
+            <div class="ueberschrift">
+                <h1>Hochladen</h1>
+            </div>
+            <section>
+                <div class="kategorie">
+                    <form>
+                        <label for="kategorieEingabe"><h3>Geben Sie hier die jeweilige Kategorie ein:</h3></label>
+                        <input type="text" id="kategorieEingabe" name="kategorieEingabe"><br><br>
+                        <input type="submit" value="Senden">
+                    </form>
+                    <br>
+                    <br>
+                    <h3>Hier sind Ihre eingegebenen Kategorien:</h3>
+                    <table width="50%" height="25px" border="1">
+                        <tr>
+                            <td>Hund</td>
+                            <td>Süß</td>
+                            <td>Grün</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="hochladen">
+                    <div class="auswahl">
+                        Bild zum Hochladen hier ablegen
+                        <br><br><br><br>
+                        <form>
+                            <input type="button" value="Datei auswählen">
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+			<div class="footerText">
+                &#169; SiSiTi
+            </div>
+		</footer>
+	</body>
+</html>
