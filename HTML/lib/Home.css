@@ -1,0 +1,50 @@
+section.galerie {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 300px;
+    height: 260px;
+}
+
+section.galerie:hover {
+    border: 1px solid #777;
+}
+
+section.galerie img {
+    width: 100%;
+    height: auto;
+}
+section.logo{
+    text-decoration: none;
+    float: right;
+    font-size: medium;
+    font-style: italic;
+
+}
+section.desc {
+    padding: 15px;
+    text-align: center;
+    
+}
+
+section.desc:hover{
+    border:1px solid #777;
+}
+
+.banner{
+    background-image: url(../pics/Beispiele/Bsp22.jpg);
+    height: 200px;
+    background-size:cover;
+}
+.bannertext p{
+    height: 100%;
+    color: White;
+    text-align: center;
+    display: grid;
+    align-items: center;
+    margin: auto;
+    font-size: xx-large;
+}
+.bannertext{
+    height: 100%;
+}
