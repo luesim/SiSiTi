@@ -39,12 +39,28 @@ body {
 }
 
 .suchfeld{
-    height: 90%;
+    height: 100%;
     width: 30%;
 }
 
-.button{
-    height: 60%;
+.suchfeldHoehe input[type=button]{
+    padding: 5px;
+    border-radius: 0px;
+    border-color: black;
+    color: white;
+    background-color: black;
+}
+  
+.suchfeldHoehe input[type=button]:hover{
+    cursor: pointer;
+    color: black;
+    background-color: white;
+}
+
+.suchfeldHoehe input[type=text]{
+    border-color: black;
+    border-radius: 0px;
+    background-color:	#F5F5F5;
 }
 
 .symbol{
