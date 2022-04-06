@@ -5,15 +5,19 @@
     
   }
   
-  button {
-    background-color: #3c3d3d;
+.buttons {
+    width: 10%;
+    padding: 5px;
+    border-radius: 0px;
+    border-color: black;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 20%;
+    background-color: black;
+  }
     
+.buttons:hover{
+    cursor: pointer;
+    color: black;
+    background-color: white;
   }
   
   button:hover {
