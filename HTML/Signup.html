@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>SiSiTi</title>
+		<title>SiSiTi - SignUp</title>
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
         <link rel="stylesheet" type="text/css" href="lib/signup.css">
 	</head>
@@ -24,10 +24,10 @@
                             <a title="BildHochladen" href="hochladen.html" class="link"> <img src="pics/hochladen.png" width="40" height="40" alt="Hochladen"> </a>
                         </td>
                         <td class="symbol" width="1%">
-                            <a title="Zip" href="zip.html" class="link"> <img src="pics/zip.png" width="40" height="40" alt="Zip"> </a>
+                            <a title="Zip" href="Warenkorb.html" class="link"> <img src="pics/zip.png" width="40" height="40" alt="Zip"> </a>
                         </td>
                         <td class="symbol" width="1%">
-                            <a title="Anmelden" href="anmelden.html" class="link"> <img src="pics/login.png" width="40" height="40" alt="Login"> </a>
+                            <a title="Anmelden" href="SignIn.html" class="link"> <img src="pics/login.png" width="40" height="40" alt="Login"> </a>
                         </td>
                     </tr>
                 </table>
@@ -37,16 +37,18 @@
         </header>
   
             <div class="eingaben">
-                <h2>Sign up</h2>
-                <p class="signuptext">Um Bilder hochladen zu koennen,<br> muessen Sie sich zuerst registrieren<br>und unsere AGB's akzeptieren</p>
-                <input type="text" class="signup" placeholder="Your name" name="name" required><br>
-                <input type="text" class="signup" placeholder="Email" name="email" required><br>
-                <input type="password" class="signup" placeholder="Password" name="psw" required>
-                <br><br>
-                <input type="checkbox" id="AGB" name="AGB's" unchecked>
-                
-                <label for="AGB">Ich akzeptiere die <a href="url">AGB's</a></label><br><br>
-                <button type="submit">Sign up</button>
+                <h2>Sign Up</h2>
+                <p class="signuptext">Um Bilder hochladen zu können,<br> müssen Sie sich zuerst registrieren<br>und unsere AGB's akzeptieren</p>
+                <form>
+                    <input type="text" class="signup" placeholder="Your name" name="name" required><br>
+                    <input type="text" class="signup" placeholder="Email" name="email" required><br>
+                    <input type="password" class="signup" placeholder="Password" name="psw" required>
+                    <br><br>
+                    <input type="checkbox" id="AGB" name="AGB's" unchecked>
+                    
+                    <label for="AGB">Ich akzeptiere die <a href="AGB.html">AGB's</a></label><br><br>
+                    <button type="submit">Sign Up</button>
+                </form>
             </div>
         <footer>
 			<div class="footerText">

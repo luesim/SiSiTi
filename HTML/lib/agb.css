@@ -1,27 +1,5 @@
-.AGBCheckbox{
-    text-align: center;
-    margin:0px auto;
-    padding: 2px;
-    border: 2px solid black;
-    max-width: 30%;
-    
-}
 main{
     text-align:left;
     margin-left: 10px;
 }
-  
-.AGBButtoncss {
-    width: 30%;
-    padding: 5px;
-    border-radius: 0px;
-    border-color: black;
-    color: white;
-    background-color: black;
-}
-  
-.AGBButtoncss:hover{
-    cursor: pointer;
-    color: black;
-    background-color: white;
-}
+

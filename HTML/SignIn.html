@@ -24,10 +24,10 @@
                             <a title="BildHochladen" href="hochladen.html" class="link"> <img src="pics/hochladen.png" width="40" height="40" alt="Hochladen"> </a>
                         </td>
                         <td class="symbol" width="1%">
-                            <a title="Zip" href="zip.html" class="link"> <img src="pics/zip.png" width="40" height="40" alt="Zip"> </a>
+                            <a title="Zip" href="Warenkorb.html" class="link"> <img src="pics/zip.png" width="40" height="40" alt="Zip"> </a>
                         </td>
                         <td class="symbol" width="1%">
-                            <a title="Anmelden" href="anmelden.html" class="link"> <img src="pics/login.png" width="40" height="40" alt="Login"> </a>
+                            <a title="Anmelden" href="SignIn.html" class="link"> <img src="pics/login.png" width="40" height="40" alt="Login"> </a>
                         </td>
                     </tr>
                 </table>
@@ -37,12 +37,18 @@
         </header>
  
             <div class="eingaben">
-                <h2>Sign in</h2>
-                <p class="signintext">Um Bilder hochladen zu koennen,<br> muessen Sie sich zuerst anmelden</p>
+                <h2>Sign In</h2>
+                <p class="signintext">Um Bilder hochladen zu können,<br> müssen Sie sich zuerst anmelden</p>
+                <form>
                 <input type="text" class="signin" placeholder="Email" name="email" required><br>
                 <input type="password" class="signin" placeholder="Password" name="psw" required>
                 <br>    
-                <button type="submit">Sign in</button>
+                <button type="submit" class="signinbutton">Sign In</button>
+            </form>
+                <p>
+                    Noch nicht registriert? <a href="Signup.html">Klicke hier</a>
+                </p>
+                
             </div>
             
         <footer>
