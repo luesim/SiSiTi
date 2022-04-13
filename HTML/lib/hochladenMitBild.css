@@ -1,11 +1,11 @@
-main{
-    height: 65vh;
-}
-
 .ueberschrift{
-    width: 100%;
     margin-left: 10vh;
     color: grey
+}
+
+.ueberschrift a{
+  text-decoration: none;
+  color: grey;
 }
 
 .kategorie{
@@ -24,7 +24,7 @@ main{
 }
 
 .kategorie input[type=submit]{
-  width: 20%;
+  width: 170px;
   padding: 5px;
   border-radius: 0px;
   border-color: black;
@@ -43,9 +43,14 @@ main{
   border-collapse: collapse;
 }
 
+.kategorie a{
+  text-decoration: none;
+  color: red;
+}
+
 .hochladen{
     float: left;
-    width: 30%;
+    width: 25%;
 }
 
 .bild{
@@ -71,4 +76,25 @@ main{
   cursor: pointer;
   color: black;
   background-color: white;
+}
+
+.einschraenkung{
+  float: left;
+  width:24%;
+  margin-left: 1%;
+}
+
+.einschraenkungUeberschrift{
+  font-size:x-large;
+  font-weight: 550;
+  margin-bottom:3%; 
+  text-align: left;
+  color: grey;
+}
+
+.einschraenkung table{
+  text-align: left;
+  list-style-type: none;
+  display: inline-block;
+  padding-left: 5px;
 }

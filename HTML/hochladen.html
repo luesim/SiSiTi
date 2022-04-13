@@ -37,35 +37,64 @@
         </header>
         <main>
             <div class="ueberschrift">
-                <h1>Hochladen</h1>
+                <h1><a href="Home.html">&#8249; Hochladen</a></h1>
             </div>
-            <section>
-                <div class="kategorie">
+            <section class="kategorie">
+                <form>
+                    <label for="kategorieEingabe"><h3>Geben Sie hier die jeweilige Kategorien des Bildes ein:</h3></label>
+                    <input type="text" id="kategorieEingabe" name="kategorieEingabe"><br><br>
+                    <input type="submit" value="Kategorie hinzufügen">
+                </form>
+                <br>
+                <br>
+                <h3>Hier sind Ihre eingegebenen Kategorien:</h3>
+                <table width="50%" height="25px" border="1">
+                    <tr>
+                        <td>Hund <a href="hochladen.html">&#10006;</a></td>
+                        <td>Süß <a href="hochladen.html">&#10006;</a></td>
+                        <td>Grün <a href="hochladen.html">&#10006;</a></td>
+                    </tr>
+                </table>
+            </section>
+            <section class="hochladen">
+                <div class="auswahl">
+                    Bild zum Hochladen hier ablegen
+                    <br><br><br><br>
                     <form>
-                        <label for="kategorieEingabe"><h3>Geben Sie hier die jeweilige Kategorie ein:</h3></label>
-                        <input type="text" id="kategorieEingabe" name="kategorieEingabe"><br><br>
-                        <input type="submit" value="Senden">
+                        <input type="button" value="Bild auswählen">
                     </form>
-                    <br>
-                    <br>
-                    <h3>Hier sind Ihre eingegebenen Kategorien:</h3>
-                    <table width="50%" height="25px" border="1">
+                </div>
+                <div>
+                <table width="60%" height="50px" class="buttonBild">
+                    <tr>
+                        <td><input type="button" value="Löschen"></td>
+                        <td><input type="button" value="Bild auswählen"></td>
+                        <td><input type="button" value="Hochladen"></td>
+                    </tr>
+                </table>
+                </div>
+            </section>
+            <section class="einschraenkung">
+                <table>
+                    <caption><p class="einschraenkungUeberschrift">Bild-Einschr&auml;nkung:</p></caption>
+                    <tr>
+                        <td>max. Dateigr&ouml;ße:</td>
+                        <td>1MB</td>
+                    </tr>  
                         <tr>
-                            <td>Hund</td>
-                            <td>Süß</td>
-                            <td>Grün</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="hochladen">
-                    <div class="auswahl">
-                        Bild zum Hochladen hier ablegen
-                        <br><br><br><br>
-                        <form>
-                            <input type="button" value="Datei auswählen">
-                        </form>
-                    </div>
-                </div>
+                            <td>Auflösung:</td>
+                            <td>1920x1271</td>
+                        </tr>   
+                        <tr>
+                        <tr>
+                            <td>max. Auflösung:</td>
+                            <td>4.096 x 2.160</td>
+                        </tr>  
+                        <tr>
+                            <td>Erlaubte Bildformate:</td>
+                            <td>PNG,JPG</td>
+                        </tr>  
+                </table>
             </section>
         </main>
         <footer>
