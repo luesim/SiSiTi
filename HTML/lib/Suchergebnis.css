@@ -2,8 +2,14 @@ section.searchdesc {
     padding: 15px;
     text-align: center;    
 }
+.searchdescT{
+    align-items: center;
+}
 
 a{
     text-decoration: none;
     color: black;
+}
+section.main{
+    padding: 10px;
 }
