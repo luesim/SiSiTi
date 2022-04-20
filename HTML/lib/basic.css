@@ -26,6 +26,11 @@ body {
     text-decoration: none;
     color: black;
 }
+.linkfoot{
+    text-decoration: none;
+    color: white;
+    display: inline list-item;
+}
 
 .nav{
     display: flex;
