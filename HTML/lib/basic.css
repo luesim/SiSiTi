@@ -26,10 +26,15 @@ body {
     text-decoration: none;
     color: black;
 }
-.linkfoot{
+
+.footerRight a{
     text-decoration: none;
+    color: white;       
+}
+.footerRight{
+    float:right;
     color: white;
-    display: inline list-item;
+    margin-top: 0px; 
 }
 
 .nav{
