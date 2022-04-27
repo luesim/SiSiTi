@@ -53,7 +53,7 @@ body {
     width: 30%;
 }
 
-.suchfeldHoehe input[type=button]{
+.suchfeldHoehe input[type=submit]{
     padding: 5px;
     border-radius: 0px;
     border-color: black;
@@ -61,7 +61,7 @@ body {
     background-color: black;
 }
   
-.suchfeldHoehe input[type=button]:hover{
+.suchfeldHoehe input[type=submit]:hover{
     cursor: pointer;
     color: black;
     background-color: white;
