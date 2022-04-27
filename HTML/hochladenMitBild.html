@@ -43,27 +43,25 @@
             <section class="kategorie">
                 <form>
                     <label for="kategorieEingabe"><h3>Geben Sie hier die jeweilige Kategorien des Bildes ein:</h3></label>
-                    <input type="text" id="kategorieEingabe" name="kategorieEingabe"><br><br>
-                    <input type="submit" value="Kategorie hinzufügen">
+                    <input type="text" id="kategorieTxt" name="kategorieEingabe"><br><br>
+                    <input type="submit" id="kategorieBtn" value="Kategorie hinzufügen">
                 </form>
                 <br>
                 <br>
                 <h3>Hier sind Ihre eingegebenen Kategorien:</h3>
-                <table width="50%" height="25px" border="1">
-                    <tr>
-                        <td>Hund <a href="hochladenMitBild.html">&#10006;</a></td>
-                        <td>Süß <a href="hochladenMitBild.html">&#10006;</a></td>
-                        <td>Grün <a href="hochladenMitBild.html">&#10006;</a></td>
-                    </tr>
-                </table>
+                <ul id="kategorieListe" width="50%" height="25px" border="1">
+                    <li>Hund <a href="hochladen.html">&#10006;</a></li>
+                    <li>Süß <a href="hochladen.html">&#10006;</a></li>
+                    <li>Grün <a href="hochladen.html">&#10006;</a></li>
+                </ul>
             </section>
             <section class="hochladen">
                 <img src="pics/bildBeispiel.jpg" width="400" height="250" class="bild" alt="Bild">
                 <table width="60%" height="50px" class="buttonBild">
                     <tr>
-                        <td><input type="button" value="Löschen"></td>
-                        <td><input type="button" value="Bild auswählen"></td>
-                        <td><input type="button" value="Hochladen"></td>
+                        <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
+                        <td><input type="button" id="bildAuswaehlenBtn2" value="Bild auswählen"></td>
+                        <td><input type="button" id="bildHochladenBtn" value="Hochladen"></td>
                     </tr>
                 </table>
             </section>
