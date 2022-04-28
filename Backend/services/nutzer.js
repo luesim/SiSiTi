@@ -11,3 +11,4 @@ serviceRouter.post('/benutzer', function(request, response){
 
 });
 
+module.exports = serviceRouter;
