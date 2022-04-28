@@ -1,3 +1,7 @@
+Object.fromEntries = l => l.reduce((a, [k,v]) => ({...a, [k]: v}), {})
+
+const helper = require('./helper.js');
+const fileHelper = require('./fileHelper.js');
 console.log('Starting server...');
 
 try {

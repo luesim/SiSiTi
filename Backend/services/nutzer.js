@@ -6,7 +6,8 @@ var serviceRouter = express.Router();
 console.log('- Service Nutzer');
 
 
-serviceRouter.post('/Signin', function(request,response){
-    console.log('Service Router: Client requested creation of new User!')
-    
+serviceRouter.post('/benutzer', function(request, response){
+    console.log('Service Router: Client requested creation of new User!');
+
 });
+
