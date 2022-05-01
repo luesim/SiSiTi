@@ -50,7 +50,7 @@ try {
     const TOPLEVELPATH = '/api';
     console.log('Binding enpoints, top level Path at ' + TOPLEVELPATH);
 
-    var serviceRouter = require('./services/nutzer.js');
+    var serviceRouter = require('./services/benutzer.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
     //serviceRouter = require('./services/bild.js');

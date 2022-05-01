@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>SiSiTi - SignUp</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
         <link rel="stylesheet" type="text/css" href="lib/signup.css">
 	</head>
@@ -40,15 +41,15 @@
             <div class="eingaben">
                 <h2>Registrierung</h2>
                 <p class="signuptext">Um Bilder hochladen zu koennen,<br> muessen Sie sich zuerst registrieren<br>und unsere AGB's akzeptieren</p>
-                <form>
+                <form id="anmeldung" enctype="multipart/form-data" method="post">
                     <input type="text" id="signupNametxt" class="signup" placeholder="Name" name="name" required><br>
                     <input type="text" id="signupEmailtxt" class="signup" placeholder="Email" name="email" required><br>
-                    <input type="password" id="signupPasswdtxt" class="signup" placeholder="Passwort" name="psw" required>
+                    <input type="password" id="signupPasswdtxt" class="signup" placeholder="Passwort" name="passwort" required>
                     <br><br>
-                    <input type="checkbox" id="AGB" name="AGB's" unchecked>
+                    <input type="checkbox" id="agb" name="agb" unchecked>
                 
                     <label for="AGB">Ich akzeptiere die <a href="AGB.html">AGB's</a></label><br><br>
-                    <button class="signupbutton" type="submit" id="signupbtn">Registrieren</button>
+                    <button type="submit" class="signupbutton" id="signupbtn">Registrieren</button>
                 </form>
             </div>
             <footer>
@@ -61,5 +62,26 @@
               </p>
           </div>
 		    </footer>
+
+            <script
+            $('#anmeldung').submit(function() {
+                console.log('button signupbtn clicked');
+                
+                var obj = { 'name': document.getElementById("signupNametxt").value, 'email': document.getElementById("signupEmailtxt").value, 
+                            'passwort': document.getElementById("signupPasswdtxt").value, 'agb': document.getElementById("agb").value};
+                $.ajax({
+                    url: 'http://localhost:8000/api/benutzer',
+                    method: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (response) {
+                    console.log(response);
+                }).fail(function (jqXHR, statusText, error) {
+                    console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+                    $('#output').html('Ein Fehler ist aufgetreten');
+                });
+            });
+            ></script>
 	</body>
 </html>
