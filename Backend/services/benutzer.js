@@ -5,7 +5,7 @@ var serviceRouter = express.Router();
 
 console.log('- Service Nutzer');
 
-serviceRouter.post('/benutzer', function(request, response) {
+serviceRouter.post('/benutzer/', function(request, response) {
     console.log('Service Benutzer: Client requested creation of new record');
 
     var errorMsgs=[];

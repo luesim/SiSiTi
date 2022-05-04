@@ -41,7 +41,7 @@
             <div class="eingaben">
                 <h2>Registrierung</h2>
                 <p class="signuptext">Um Bilder hochladen zu koennen,<br> muessen Sie sich zuerst registrieren<br>und unsere AGB's akzeptieren</p>
-                <form id="anmeldung" enctype="multipart/form-data" method="post">
+                <form>
                     <input type="text" id="signupNametxt" class="signup" placeholder="Name" name="name" required><br>
                     <input type="text" id="signupEmailtxt" class="signup" placeholder="Email" name="email" required><br>
                     <input type="password" id="signupPasswdtxt" class="signup" placeholder="Passwort" name="passwort" required>
@@ -49,7 +49,7 @@
                     <input type="checkbox" id="agb" name="agb" unchecked>
                 
                     <label for="AGB">Ich akzeptiere die <a href="AGB.html">AGB's</a></label><br><br>
-                    <button type="submit" class="signupbutton" id="signupbtn">Registrieren</button>
+                    <button class="signupbutton" id="signupbtn">Registrieren</button>
                 </form>
             </div>
             <footer>
@@ -62,26 +62,52 @@
               </p>
           </div>
 		    </footer>
+            <script type="module">
+                import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
+                // make nanoid globally available
+                window.nanoid = nanoid;
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", init);
 
-            <script
-            $('#anmeldung').submit(function() {
-                console.log('button signupbtn clicked');
-                
-                var obj = { 'name': document.getElementById("signupNametxt").value, 'email': document.getElementById("signupEmailtxt").value, 
-                            'passwort': document.getElementById("signupPasswdtxt").value, 'agb': document.getElementById("agb").value};
-                $.ajax({
-                    url: 'http://localhost:8000/api/benutzer',
-                    method: 'POST',
-                    contentType: 'application/json; charset=utf-8',
-                    cache: false,
-                    dataType: 'json'
-                }).done(function (response) {
-                    console.log(response);
-                }).fail(function (jqXHR, statusText, error) {
-                    console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
-                    $('#output').html('Ein Fehler ist aufgetreten');
-                });
-            });
-            ></script>
+                async function init() {
+                    console.log(" * Page ready!");
+        
+                    var saveBtn = document.querySelector("#signupbtn");
+                    saveBtn.addEventListener("click", async (clickEvent) => {
+                        clickEvent.preventDefault();
+        
+                        var nameInhalt = document.querySelector('#signupNametxt');
+                        var emailInhalt = document.querySelector('#signupEmailtxt');
+                        var passwortInhalt = document.querySelector('#signupPasswdtxt');
+                        var agbInhalt = document.querySelector('#agb');
+
+                        var id=nanoid();
+        
+                        let neuerBenutzer = {
+                            idBenutzer: id,
+                            name: nameInhalt.value,
+                            email: emailInhalt.value,
+                            passwort: passwortInhalt.value,
+                            agb: agbInhalt.value,
+                            sessionID: id
+                        };
+        
+                        await benutzerHinzuefugenDatenbank(neuerBenutzer);
+                    });
+                }
+
+                async function benutzerHinzuefugenDatenbank(neuerBenutzer) {
+                    let requestOptions = {
+                        method: "POST",
+                        body:JSON.stringify(neuerBenutzer),
+                        headers: {
+                            "content-type": "application/json"
+                        }
+                    };
+
+                    let response = await fetch("/benutzer/", requestOptions);
+                }
+            </script>
 	</body>
 </html>
