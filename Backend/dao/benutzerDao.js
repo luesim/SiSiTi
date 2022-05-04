@@ -23,7 +23,7 @@ class benutzerDao {
         return result;
     }
 
-    create(idBenutzer = null, name = '', email = '', passwort = '') {
+    create(idBenutzer = null, name = '', email = '', passwort = '', sessionID = null) {
         var sql = 'INSERT INTO Benutzer (idBenutzer,name,email,passwort,sessionID) VALUES (?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
         var params = [idBenutzer, name, email, md5(passwort), sessionID];
@@ -32,7 +32,7 @@ class benutzerDao {
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
 
-        return this.loadById(result.lastInsertRowid);
+        return this.loadById(idBenutzer);
     }
 
     toString() {
