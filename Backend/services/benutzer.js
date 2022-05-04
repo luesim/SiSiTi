@@ -2,7 +2,7 @@ const helper = require('../helper.js');
 const BenutzerDao = require('../dao/benutzerDao.js');
 const express = require('express');
 var serviceRouter = express.Router();
-var CryptoJS = require("crypto-js");
+const md5 = require("md5");
 
 console.log('- Service Nutzer');
 
@@ -25,8 +25,8 @@ serviceRouter.post('/benutzer/', function(request, response) {
         return;
     }
 
-    var key = "kjfngsvkf423jblkvyv645§!opjgodfpadfsdfkdsagkdapgasdfüpdfkbgknüpgfhodfe343985ß0i94$§$2()§/$()fsadfsdfsadf";
-    var sessionID = CryptoJS.HmacSHA256(request.body.name+request.body.name+request.body.passwort, key);
+    var salt = "kjfngsvkfjblkvyvopjgodfpadfsdfkdsagkdapgasdfüpdfkbgknüpgfhodfe343985ß0i94$§$2()§/$()fsadfsdfsadf";
+    var sessionID = md5(request.body.name+request.body.name+request.body.passwort+salt);
     const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
         var obj = benutzerDao.create(request.body.idBenutzer, request.body.name, request.body.name, request.body.passwort, sessionID);

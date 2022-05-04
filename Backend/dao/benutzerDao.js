@@ -13,7 +13,7 @@ class benutzerDao {
 
     loadById(id) {
 
-        var sql = 'SELECT * FROM Benutzer WHERE idBenutzer=?';
+        var sql = 'SELECT sessionID FROM Benutzer WHERE idBenutzer=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
