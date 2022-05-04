@@ -19,6 +19,8 @@ serviceRouter.post('/benutzer/', function(request, response) {
     }
     if (helper.isUndefined(request.body.passwort)) 
         errorMsgs.push('passwort fehlt');
+    if (helper.isUndefined(request.body.passwort)) 
+        errorMsgs.push('passwort fehlt');
     if (errorMsgs.length > 0) {
         console.log('Service Benutzer: Creation not possible, data missing');
         response.status(400).json({ 'fehler': true, 'nachricht': 'Funktion nicht möglich. Fehlende Daten: ' + helper.concatArray(errorMsgs) });
@@ -29,7 +31,7 @@ serviceRouter.post('/benutzer/', function(request, response) {
     var sessionID = md5(request.body.name+request.body.name+request.body.passwort+salt);
     const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
-        var obj = benutzerDao.create(request.body.idBenutzer, request.body.name, request.body.name, request.body.passwort, sessionID);
+        var obj = benutzerDao.create(request.body.idBenutzer, request.body.name, request.body.email, request.body.passwort, sessionID);
         console.log('Service Benutzer: Record inserted');
         response.status(200).json(obj);
     } catch (ex) {
