@@ -2,6 +2,7 @@ const helper = require('../helper.js');
 const BenutzerDao = require('../dao/benutzerDao.js');
 const express = require('express');
 var serviceRouter = express.Router();
+var CryptoJS = require("crypto-js");
 
 console.log('- Service Nutzer');
 
@@ -24,9 +25,11 @@ serviceRouter.post('/benutzer/', function(request, response) {
         return;
     }
 
+    var key = "kjfngsvkf423jblkvyv645§!opjgodfpadfsdfkdsagkdapgasdfüpdfkbgknüpgfhodfe343985ß0i94$§$2()§/$()fsadfsdfsadf";
+    var sessionID = CryptoJS.HmacSHA256(request.body.name+request.body.name+request.body.passwort, key);
     const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
-        var obj = benutzerDao.create(request.body.idBenutzer, request.body.name, request.body.email, request.body.passwort, request.body.sessionID);
+        var obj = benutzerDao.create(request.body.idBenutzer, request.body.name, request.body.name, request.body.passwort, sessionID);
         console.log('Service Benutzer: Record inserted');
         response.status(200).json(obj);
     } catch (ex) {
