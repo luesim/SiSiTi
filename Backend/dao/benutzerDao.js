@@ -13,7 +13,7 @@ class benutzerDao {
 
     loadById(id) {
 
-        var sql = 'SELECT * FROM Benutzer WHERE id=?';
+        var sql = 'SELECT * FROM Benutzer WHERE idBenutzer=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -24,9 +24,9 @@ class benutzerDao {
     }
 
     create(idBenutzer = null, name = '', email = '', passwort = '') {
-        var sql = 'INSERT INTO Benutzer (idBenutzer,name,email,passwort) VALUES (?,?,?,?)';
+        var sql = 'INSERT INTO Benutzer (idBenutzer,name,email,passwort,sessionID) VALUES (?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
-        var params = [idBenutzer, name, email, md5(passwort)];
+        var params = [idBenutzer, name, email, md5(passwort), sessionID];
         var result = statement.run(params);
 
         if (result.changes != 1) 

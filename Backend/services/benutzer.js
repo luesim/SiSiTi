@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const benutzerDao = require('../dao/benutzerDao.js');
+const BenutzerDao = require('../dao/benutzerDao.js');
 const express = require('express');
 var serviceRouter = express.Router();
 
@@ -13,7 +13,7 @@ serviceRouter.post('/benutzer/', function(request, response) {
         errorMsgs.push('Name fehlt');
     if (helper.isUndefined(request.body.email)) {
         errorMsgs.push('Email fehlt');
-    } else if (!helper.isEmail(request.body.email)) {
+    } else if (false === helper.isEmail(request.body.email)) {
         errorMsgs.push('Keine Email');
     }
     if (helper.isUndefined(request.body.passwort)) 
@@ -24,9 +24,9 @@ serviceRouter.post('/benutzer/', function(request, response) {
         return;
     }
 
-    const benutzerDao = new benutzerDao(request.app.locals.dbConnection);
+    const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
-        var obj = benutzerDao.create(1, request.body.name, request.body.email, request.body.passwort);
+        var obj = benutzerDao.create(request.body.idBenutzer, request.body.name, request.body.email, request.body.passwort, request.body.sessionID);
         console.log('Service Benutzer: Record inserted');
         response.status(200).json(obj);
     } catch (ex) {
