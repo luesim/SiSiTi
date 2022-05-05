@@ -13,12 +13,36 @@ class benutzerDao {
 
     loadById(id) {
 
-        var sql = 'SELECT sessionID FROM Benutzer WHERE idBenutzer=?';
+        var sql = 'SELECT * FROM Benutzer WHERE idBenutzer=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
+
+        return result;
+    }
+
+    CheckName(name) {
+
+        var sql = 'SELECT * FROM Benutzer WHERE ? NOT IN (SELECT name FROM Benutzer)';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(name);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('User with name=' + name + ' exist');
+
+        return result;
+    }
+
+    CheckEmail(email) {
+
+        var sql = 'SELECT * FROM Benutzer WHERE ? NOT IN (SELECT email FROM Benutzer)';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(email);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('User with name=' + email + ' exist');
 
         return result;
     }

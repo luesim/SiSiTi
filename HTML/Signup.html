@@ -81,16 +81,16 @@
                         var emailInhalt = document.querySelector('#signupEmailtxt');
                         var passwortInhalt = document.querySelector('#signupPasswdtxt');
                         var agbInhalt = document.querySelector('#agb');
-        
+                        
                         let neuerBenutzer = {
                             idBenutzer: nanoid(),
                             name: nameInhalt.value,
                             email: emailInhalt.value,
                             passwort: passwortInhalt.value,
-                            agb: agbInhalt.value,
+                            agb: agbInhalt.checked,
                         };
-        
-                        await benutzerHinzuefugenDatenbank(neuerBenutzer);
+                        
+                        await benutzerHinzuefugenWennNichtExistiert(neuerBenutzer);
                     });
                 }
 
@@ -104,6 +104,17 @@
                     };
 
                     let response = await fetch("http://localhost:8000/api/benutzer", requestOptions);
+                }
+
+                async function benutzerHinzuefugenWennNichtExistiert(neuerBenutzer) {
+                    let response = await fetch("http://localhost:8000/api/benutzer/nameUndEmail/"+neuerBenutzer.name+","+neuerBenutzer.email);
+                    if(response.result === true){
+                        await benutzerHinzuefugenDatenbank(neuerBenutzer);
+                        window.location = "home.html";
+                    }
+                    else{
+                        location.reload();
+                    }
                 }
             </script>
 	</body>

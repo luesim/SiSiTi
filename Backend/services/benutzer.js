@@ -6,6 +6,22 @@ const md5 = require("md5");
 
 console.log('- Service Nutzer');
 
+serviceRouter.get('/benutzer/nameUndEmail/:nameUndEmail', function(request, response) {
+    console.log('Service Benutzer: Client requested one record, name,email=' + request.params.nameUndEmail);
+
+    const nameUndEmailList = request.params.nameUndEmail.split(',');
+    const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
+    try {
+        benutzerDao.CheckName(nameUndEmailList[0]);
+        benutzerDao.CheckEmail(nameUndEmailList[1]);
+        console.log('Service Benutzer: User doesnt exist');
+        response.status(200).json({"result": true});
+    } catch (ex) {
+        console.error('Service Benutzer: Error loading record by name or email. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+}); 
+
 serviceRouter.post('/benutzer/', function(request, response) {
     console.log('Service Benutzer: Client requested creation of new record');
 
@@ -21,6 +37,8 @@ serviceRouter.post('/benutzer/', function(request, response) {
         errorMsgs.push('passwort fehlt');
     if (helper.isUndefined(request.body.passwort)) 
         errorMsgs.push('passwort fehlt');
+    if (false === request.body.agb) 
+        errorMsgs.push('agb falsch');
     if (errorMsgs.length > 0) {
         console.log('Service Benutzer: Creation not possible, data missing');
         response.status(400).json({ 'fehler': true, 'nachricht': 'Funktion nicht möglich. Fehlende Daten: ' + helper.concatArray(errorMsgs) });
