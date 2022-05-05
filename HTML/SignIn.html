@@ -92,14 +92,21 @@
                     var abfrage = await response.json();
                     console.log(abfrage);
                     if(abfrage.SESSIONID){
-                        document.cookie = "SessionID="+abfrage.SESSIONID+";";
+                        setCookie(abfrage.SESSIONID);
                         alert("Erfolgreich angemeldet!");
-                        //window.location = "home.html"
+                        window.location = "home.html"
                     }
                     else{
                         alert('Anmeldedaten sind falsch!');
                         location.reload();
                     }
+                }
+                function setCookie(ID){
+                    var expires = new Date();
+                    var days = 1
+                    expires.setDate(expires.getTime()+ days)
+                    document.cookie = "SessionID=" + ID + ";expires=" + expires.toUTCString() + ";"; 
+
                 }
                 
             </script>
