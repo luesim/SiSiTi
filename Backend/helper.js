@@ -240,3 +240,30 @@ module.exports.round = function(val) {
     val = Math.round(val*Math.pow(10,2))/Math.pow(10,2);
     return val;
 }
+
+// return json object as message
+module.exports.jsonMsg = function(message = 'OK', payload = null, error = false) {
+    return {
+        'nachricht': message, 
+        'fehler': error,
+        'daten': payload
+    };
+}
+
+// return json object as error message
+module.exports.jsonMsgError = function(message = 'Fehler') {
+    return {
+        'nachricht': message, 
+        'fehler': true,
+        'daten': null
+    };
+}
+
+// return json object as success message
+module.exports.jsonMsgOK = function(payload) {
+    return {
+        'nachricht': 'OK', 
+        'fehler': false,
+        'daten': payload
+    };
+}

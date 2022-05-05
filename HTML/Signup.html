@@ -104,15 +104,25 @@
                     };
 
                     let response = await fetch("http://localhost:8000/api/benutzer", requestOptions);
+                    var abfrage = await response.json();
+                    console.log(abfrage);
+                    if(abfrage.SESSIONID){
+                        alert('Sie haben sich erfolgreich registriert!')
+                        window.location = "SignIn.html";
+                    }
+                    else{
+                        alert('Anmeldedaten sind nicht korrekt!');
+                    }
                 }
 
                 async function benutzerHinzuefugenWennNichtExistiert(neuerBenutzer) {
                     let response = await fetch("http://localhost:8000/api/benutzer/nameUndEmail/"+neuerBenutzer.name+","+neuerBenutzer.email);
-                    if(response.result === true){
+                    var abfrage = await response.json();
+                    if(abfrage.result === true){
                         await benutzerHinzuefugenDatenbank(neuerBenutzer);
-                        window.location = "home.html";
                     }
                     else{
+                        alert('Name oder Email existiert bereits!');
                         location.reload();
                     }
                 }
