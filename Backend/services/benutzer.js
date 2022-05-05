@@ -6,6 +6,7 @@ const md5 = require("md5");
 
 console.log('- Service Nutzer');
 
+//Für diese Abfrage muss mindestens ein Eintrag in der Tabelle Benutzer vorhanden sein.
 serviceRouter.get('/benutzer/nameUndEmail/:nameUndEmail', function(request, response) {
     console.log('Service Benutzer: Client requested one record, name,email=' + request.params.nameUndEmail);
 
@@ -35,8 +36,8 @@ serviceRouter.post('/benutzer/', function(request, response) {
     }
     if (helper.isUndefined(request.body.passwort)) 
         errorMsgs.push('passwort fehlt');
-    if (helper.isUndefined(request.body.passwort)) 
-        errorMsgs.push('passwort fehlt');
+    if (request.body.passwort.length < 6) 
+        errorMsgs.push('passwort zu kurz');
     if (false === request.body.agb) 
         errorMsgs.push('agb falsch');
     if (errorMsgs.length > 0) {
@@ -57,5 +58,37 @@ serviceRouter.post('/benutzer/', function(request, response) {
         response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
     }
 });
+
+serviceRouter.get('/benutzer/emailUndPasswort/:emailUndPasswort', function(request, response) {
+    console.log('Service Benutzer: Client trys a login with email,passwort=' + request.params.emailUndPasswort);
+    
+    const emailUndPasswortList = request.params.emailUndPasswort.split(',');
+    var errorMsgs=[];
+    if (helper.isUndefined(emailUndPasswortList[0])) {
+        errorMsgs.push('Email fehlt');
+    } else if (false === helper.isEmail(emailUndPasswortList[0])) {
+        errorMsgs.push('Keine Email');
+    }
+    if (helper.isUndefined(emailUndPasswortList[1])) 
+        errorMsgs.push('passwort fehlt');
+    if (emailUndPasswortList[1].length < 6) 
+        errorMsgs.push('passwort zu kurz');
+    if (errorMsgs.length > 0) {
+        console.log('Service Benutzer: Creation not possible, data missing');
+        response.status(400).json({ 'fehler': true, 'nachricht': 'Funktion nicht möglich. Fehlende Daten: ' + helper.concatArray(errorMsgs) });
+        return;
+    }
+
+
+    const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
+    try {
+        var obj = benutzerDao.login(emailUndPasswortList[0], emailUndPasswortList[1]);
+        console.log('Service Benutzer: angemeldet');
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Benutzer: Error with login. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+}); 
 
 module.exports = serviceRouter;

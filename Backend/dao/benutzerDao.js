@@ -42,7 +42,7 @@ class benutzerDao {
         var result = statement.get(email);
 
         if (helper.isUndefined(result)) 
-            throw new Error('User with name=' + email + ' exist');
+            throw new Error('User with email=' + email + ' exist');
 
         return result;
     }
@@ -57,6 +57,18 @@ class benutzerDao {
             throw new Error('Could not insert new Record. Data: ' + params);
 
         return this.loadById(idBenutzer);
+    }
+
+    login(email = '', passwort = '') {
+        var sql = 'SELECT * FROM Benutzer WHERE email=? AND passwort=?';
+        var statement = this._conn.prepare(sql);
+        var params = [email, md5(passwort)];
+        var result = statement.get(params);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('User with email=' + email + ' and passwort=' + passwort + 'doesnt exist');
+
+        return result;
     }
 
     toString() {
