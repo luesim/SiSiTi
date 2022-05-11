@@ -88,7 +88,7 @@
                 }
 
                 async function benutzerAnmeldung(neuerBenutzer) {
-                    let response = await fetch("http://localhost:8000/api/benutzer/emailUndPasswort/"+neuerBenutzer.email+","+neuerBenutzer.passwort);
+                    let response = await fetch("http://localhost:8000/api/benutzer/emailUndPasswort/" + neuerBenutzer.email + "/" + neuerBenutzer.passwort);
                     var abfrage = await response.json();
                     console.log(abfrage);
                     if(abfrage.SESSIONID){
@@ -106,9 +106,7 @@
                     var days = 1
                     expires.setDate(expires.getTime()+ days)
                     document.cookie = "SessionID=" + ID + ";expires=" + expires.toUTCString() + ";"; 
-
                 }
-                
             </script>
 	</body>
 </html>

@@ -116,7 +116,7 @@
                 }
 
                 async function benutzerHinzuefugenWennNichtExistiert(neuerBenutzer) {
-                    let response = await fetch("http://localhost:8000/api/benutzer/nameUndEmail/"+neuerBenutzer.name+","+neuerBenutzer.email);
+                    let response = await fetch("http://localhost:8000/api/benutzer/nameUndEmail/" + neuerBenutzer.name + "/" + neuerBenutzer.email);
                     var abfrage = await response.json();
                     if(abfrage.result === true){
                         await benutzerHinzuefugenDatenbank(neuerBenutzer);

@@ -7,14 +7,13 @@ const md5 = require("md5");
 console.log('- Service Nutzer');
 
 //Für diese Abfrage muss mindestens ein Eintrag in der Tabelle Benutzer vorhanden sein.
-serviceRouter.get('/benutzer/nameUndEmail/:nameUndEmail', function(request, response) {
-    console.log('Service Benutzer: Client requested one record, name,email=' + request.params.nameUndEmail);
+serviceRouter.get('/benutzer/nameUndEmail/:name/:email', function(request, response) {
+    console.log('Service Benutzer: Client requested one record, name,email=' + request.params.name + "," + request.params.email);
 
-    const nameUndEmailList = request.params.nameUndEmail.split(',');
     const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
-        benutzerDao.CheckName(nameUndEmailList[0]);
-        benutzerDao.CheckEmail(nameUndEmailList[1]);
+        benutzerDao.CheckName(request.params.name);
+        benutzerDao.CheckEmail(request.params.email);
         console.log('Service Benutzer: User doesnt exist');
         response.status(200).json({"result": true});
     } catch (ex) {
@@ -22,6 +21,7 @@ serviceRouter.get('/benutzer/nameUndEmail/:nameUndEmail', function(request, resp
         response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
     }
 }); 
+
 
 serviceRouter.post('/benutzer/', function(request, response) {
     console.log('Service Benutzer: Client requested creation of new record');
@@ -59,19 +59,18 @@ serviceRouter.post('/benutzer/', function(request, response) {
     }
 });
 
-serviceRouter.get('/benutzer/emailUndPasswort/:emailUndPasswort', function(request, response) {
-    console.log('Service Benutzer: Client trys a login with email,passwort=' + request.params.emailUndPasswort);
+serviceRouter.get('/benutzer/emailUndPasswort/:email/:passwort', function(request, response) {
+    console.log('Service Benutzer: Client trys a login with email,passwort=' + request.params.email + ',' + request.params.passwort);
     
-    const emailUndPasswortList = request.params.emailUndPasswort.split(',');
     var errorMsgs=[];
-    if (helper.isUndefined(emailUndPasswortList[0])) {
+    if (helper.isUndefined(request.params.email)) {
         errorMsgs.push('Email fehlt');
-    } else if (false === helper.isEmail(emailUndPasswortList[0])) {
+    } else if (false === helper.isEmail(request.params.email)) {
         errorMsgs.push('Keine Email');
     }
-    if (helper.isUndefined(emailUndPasswortList[1])) 
+    if (helper.isUndefined(request.params.passwort))
         errorMsgs.push('passwort fehlt');
-    if (emailUndPasswortList[1].length < 6) 
+    if (request.params.passwort.length < 6) 
         errorMsgs.push('passwort zu kurz');
     if (errorMsgs.length > 0) {
         console.log('Service Benutzer: Creation not possible, data missing');
@@ -82,7 +81,7 @@ serviceRouter.get('/benutzer/emailUndPasswort/:emailUndPasswort', function(reque
 
     const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
-        var obj = benutzerDao.login(emailUndPasswortList[0], emailUndPasswortList[1]);
+        var obj = benutzerDao.login(request.params.email, request.params.passwort);
         console.log('Service Benutzer: angemeldet');
         response.status(200).json(obj);
     } catch (ex) {
