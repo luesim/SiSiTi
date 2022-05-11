@@ -49,28 +49,20 @@
                 </form>
                 <br>
                 <br>
-                <h3>Hier sind Ihre eingegebenen Kategorien:</h3>
+                <h3>Hier sind Ihre eingegebenen Kategorien (max. 3):</h3>
+                <p class="loeschenHinweis"> (Zum löschen auf die jeweilige Kategorie klicken) </p>
                 <ul id="kategorieListe" width="50%" height="25px" border="1">
-                    <!--
-                    <li>Hund <a href="hochladen.html">&#10006;</a></li>
-                    <li>Süß <a href="hochladen.html">&#10006;</a></li>
-                    <li>Grün <a href="hochladen.html">&#10006;</a></li>
-                    -->
                 </ul>
             </section>
             <section class="hochladen">
                 <div class="auswahl">
-                    Bild zum Hochladen hier ablegen
-                    <br><br><br><br>
-                    <form>
-                        <input type="button" id="bildAuswaehlenBtn1" value="Bild auswählen">
-                    </form>
+                    <p>Bild zum Hochladen unten ausw&auml;hlen</p>
                 </div>
                 <div>
                 <table width="60%" height="50px" class="buttonBild">
                     <tr>
                         <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
-                        <td><input type="button" id="bildAuswaehlenBtn2" value="Bild auswählen"></td>
+                        <td><input type="file" id="bildAuswaehlenBtn"><label for="bildAuswaehlenBtn">Bild auswählen</label></td>
                         <td><input type="button" id="bildHochladenBtn" value="Hochladen"></td>
                     </tr>
                 </table>
@@ -122,23 +114,56 @@
             async function init() {
                 console.log(" * Page ready!");
 
+                var kategorien = document.querySelectorAll("#kategorieListe li");
+                kategorien.forEach(item => item.addEventListener("click", removeKategorie));
+
                 var saveKategorieBtn = document.querySelector("#kategorieBtn");
+                
                 saveKategorieBtn.addEventListener("click", async (clickEvent) => {
                     clickEvent.preventDefault();
+
+                    var katgeorieTxt = document.querySelector('#kategorieTxt');
+                    kategorieTxt.value = katgeorieTxt.value.toLowerCase();
             
-                    if(kategorieListe.length < 3){
-                        var katgeorieTxt = document.querySelector('#kategorieTxt');
-
-                        var neueKategorieInHTML = '';
-
-                        neueKategorieInHTML += '<li>';
-                        neueKategorieInHTML += katgeorieTxt.value;
-                        neueKategorieInHTML += '</li>';
-                        
-                        kategorieListe.push(katgeorieTxt.value);
-                        $('#kategorieListe').append(neueKategorieInHTML);
+                    if(kategorieListe.length >= 3 || !katgeorieTxt.value || kategorieListe.includes(katgeorieTxt.value)){
+                        katgeorieTxt.value = '';
+                        return;
                     }
+
+
+                    var neueKategorieInHTML = document.createElement('li');
+                    neueKategorieInHTML.innerHTML = katgeorieTxt.value;
+                    neueKategorieInHTML.addEventListener("click", removeKategorie);
+                    
+                    kategorieListe.push(katgeorieTxt.value);
+                    katgeorieTxt.value = '';
+                    $('#kategorieListe').append(neueKategorieInHTML);
+
                 });
+            }
+
+            async function removeKategorie(clickEvent) {
+                var li = clickEvent.currentTarget;
+                var neueKategorieListe = kategorieListe.filter(kategorie => kategorie != li.innerHTML);
+                kategorieListe = neueKategorieListe;
+
+                clearTodoList();
+                addAllKategorien();
+            }
+
+            function clearTodoList() {
+                var listKategorie = document.querySelectorAll("#kategorieListe li");
+                listKategorie.forEach(kategorie => kategorie.remove());
+            }
+
+            function addAllKategorien() {
+                for (let i=0; i<kategorieListe.length; i++) {
+                    var neueKategorieInHTML = document.createElement('li');
+                    neueKategorieInHTML.innerHTML = kategorieListe[i];
+                    neueKategorieInHTML.addEventListener("click", removeKategorie);
+                    
+                    $('#kategorieListe').append(neueKategorieInHTML);
+                }
             }
         </script>
 	</body>
