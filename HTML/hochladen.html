@@ -55,14 +55,14 @@
                 </ul>
             </section>
             <section class="hochladen">
-                <div class="auswahl">
-                    <p>Bild zum Hochladen unten ausw&auml;hlen</p>
+                <div class="auswahl" id="bildInhalt">
+                    <p id="bildText">Bild zum Hochladen unten ausw&auml;hlen</p>
                 </div>
                 <div>
                 <table width="60%" height="50px" class="buttonBild">
                     <tr>
                         <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
-                        <td><input type="file" id="bildAuswaehlenBtn"><label for="bildAuswaehlenBtn">Bild auswählen</label></td>
+                        <td><input type="file" id="bildAuswaehlenBtn" accept="image/*"><label for="bildAuswaehlenBtn">Bild auswählen</label></td>
                         <td><input type="button" id="bildHochladenBtn" value="Hochladen"></td>
                     </tr>
                 </table>
@@ -108,15 +108,15 @@
         </script>
         <script>
             var kategorieListe = [];
+            var bildDaten = null;
+            const reader  = new FileReader();
 
             document.addEventListener("DOMContentLoaded", init);
 
             async function init() {
                 console.log(" * Page ready!");
 
-                var kategorien = document.querySelectorAll("#kategorieListe li");
-                kategorien.forEach(item => item.addEventListener("click", removeKategorie));
-
+                //Kategorien
                 var saveKategorieBtn = document.querySelector("#kategorieBtn");
                 
                 saveKategorieBtn.addEventListener("click", async (clickEvent) => {
@@ -140,18 +140,37 @@
                     $('#kategorieListe').append(neueKategorieInHTML);
 
                 });
+
+                //Bild
+                var bildElement = document.getElementById("bildAuswaehlenBtn");
+                bildElement.addEventListener("change", handleBild, false);
+
+                var loeschBildBtn = document.querySelector("#bildLoeschenBtn");
+                loeschBildBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+                    clearBildfenser();
+
+                    var imageHTML = document.createElement('p');
+                    imageHTML.setAttribute("class", "bildText");
+                    imageHTML.innerHTML = "Bild zum Hochladen unten ausw&auml;hlen";
+                    $('#bildInhalt').append(imageHTML);
+                    
+
+                });
+                
             }
 
+            //Kategorie
             async function removeKategorie(clickEvent) {
                 var li = clickEvent.currentTarget;
                 var neueKategorieListe = kategorieListe.filter(kategorie => kategorie != li.innerHTML);
                 kategorieListe = neueKategorieListe;
 
-                clearTodoList();
+                clearKategorie();
                 addAllKategorien();
             }
 
-            function clearTodoList() {
+            function clearKategorie() {
                 var listKategorie = document.querySelectorAll("#kategorieListe li");
                 listKategorie.forEach(kategorie => kategorie.remove());
             }
@@ -164,6 +183,26 @@
                     
                     $('#kategorieListe').append(neueKategorieInHTML);
                 }
+            }
+
+            //Bild
+            function handleBild() {
+                bildDaten = this.files[0]; 
+                clearBildfenser();
+
+                var imageHTML = document.createElement('p');
+                imageHTML.setAttribute("class", "bildText");
+                imageHTML.innerHTML = bildDaten.name + " wurde hochgeladen";
+                $('#bildInhalt').append(imageHTML);
+            
+                //console.log(reader.readAsDataURL(this.files[0]));
+            }
+
+            function clearBildfenser() {
+                if(document.querySelector("#bildInhalt p"))
+                    document.querySelector("#bildInhalt p").remove();
+                if(document.querySelector("#bildInhalt img"))
+                    document.querySelector("#bildInhalt img").remove();
             }
         </script>
 	</body>
