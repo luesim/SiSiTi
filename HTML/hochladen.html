@@ -149,6 +149,7 @@
                 loeschBildBtn.addEventListener("click", async (clickEvent) => {
                     clickEvent.preventDefault();
                     clearBildfenser();
+                    bildDaten = null;
 
                     var imageHTML = document.createElement('p');
                     imageHTML.setAttribute("class", "bildText");
