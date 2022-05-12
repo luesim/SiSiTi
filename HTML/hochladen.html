@@ -189,14 +189,22 @@
             //Bild
             function handleBild() {
                 bildDaten = this.files[0]; 
+                bildURL = URL.createObjectURL(bildDaten);
                 clearBildfenser();
 
+                var imageHTML = document.createElement('img');
+                imageHTML.setAttribute("class", "pic");
+                imageHTML.setAttribute("src", bildURL);
+                /*
                 var imageHTML = document.createElement('p');
                 imageHTML.setAttribute("class", "bildText");
                 imageHTML.innerHTML = bildDaten.name + " wurde hochgeladen";
+                */
                 $('#bildInhalt').append(imageHTML);
+
             
                 //console.log(reader.readAsDataURL(this.files[0]));
+                console.log(URL.createObjectURL(bildDaten));
             }
 
             function clearBildfenser() {
