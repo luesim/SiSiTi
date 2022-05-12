@@ -189,12 +189,13 @@
             //Bild
             function handleBild() {
                 bildDaten = this.files[0]; 
-                bildURL = URL.createObjectURL(bildDaten);
+                bildBlobURL = URL.createObjectURL(bildDaten);
                 clearBildfenser();
 
                 var imageHTML = document.createElement('img');
                 imageHTML.setAttribute("class", "pic");
-                imageHTML.setAttribute("src", bildURL);
+                imageHTML.setAttribute("data-id","pic")
+                imageHTML.setAttribute("src", bildBlobURL);
                 /*
                 var imageHTML = document.createElement('p');
                 imageHTML.setAttribute("class", "bildText");
@@ -202,10 +203,20 @@
                 */
                 $('#bildInhalt').append(imageHTML);
 
-            
-                //console.log(reader.readAsDataURL(this.files[0]));
-                console.log(URL.createObjectURL(bildDaten));
+               // downloadURI(bildURL,'test.png');
             }
+
+            /*
+            function downloadURI(uri, name) {
+                var link = document.createElement("a");
+                link.download = name;
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                link.remove();
+            }
+            */
 
             function clearBildfenser() {
                 if(document.querySelector("#bildInhalt p"))
