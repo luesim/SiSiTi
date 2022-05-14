@@ -42,7 +42,7 @@
                 <h1><a href="Home.html">&#8249; Hochladen</a></h1>
             </div>
             <section class="kategorie">
-                <form>
+                <form id="uploadForm" enctype="multipart/form-data" method="post">
                     <label for="kategorieEingabe"><h3>Geben Sie hier die jeweilige Kategorien des Bildes ein:</h3></label>
                     <input type="text" id="kategorieTxt" name="kategorieEingabe"><br><br>
                     <input type="submit" id="kategorieBtn" value="Kategorie hinzufügen">
@@ -61,9 +61,11 @@
                 <div>
                 <table width="60%" height="50px" class="buttonBild">
                     <tr>
-                        <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
-                        <td><input type="file" id="bildAuswaehlenBtn" accept="image/*"><label for="bildAuswaehlenBtn">Bild auswählen</label></td>
-                        <td><input type="button" id="bildHochladenBtn" value="Hochladen"></td>
+                        <form id="uploadForm" enctype="multipart/form-data" method="post">
+                            <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
+                            <td><input type="file" id="bildAuswaehlenBtn" accept="image/*"><label for="bildAuswaehlenBtn">Bild auswählen</label></td>
+                            <td><input type="submit" id="bildHochladenBtn" value="Hochladen"></td>
+                        </form>
                     </tr>
                 </table>
                 </div>
@@ -75,19 +77,10 @@
                         <td>max. Dateigr&ouml;ße:</td>
                         <td>1MB</td>
                     </tr>  
-                        <tr>
-                            <td>Auflösung:</td>
-                            <td>1920x1271</td>
-                        </tr>   
-                        <tr>
-                        <tr>
-                            <td>max. Auflösung:</td>
-                            <td>4.096 x 2.160</td>
-                        </tr>  
-                        <tr>
-                            <td>Erlaubte Bildformate:</td>
-                            <td>PNG,JPG</td>
-                        </tr>  
+                    <tr>
+                        <td>Erlaubte Bildformate:</td>
+                        <td>Alle</td>
+                    </tr>  
                 </table>
             </section>
         </main>
@@ -155,10 +148,54 @@
                     imageHTML.setAttribute("class", "bildText");
                     imageHTML.innerHTML = "Bild zum Hochladen unten ausw&auml;hlen";
                     $('#bildInhalt').append(imageHTML);
-                    
-
                 });
-                
+
+                var hochladenBildBtn = document.querySelector("#bildHochladenBtn");
+                hochladenBildBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+
+                    var sessionID = getCookie("SessionID");
+                    //benutzer abfrage
+                    if(!sessionID){
+                        alert('Sie sind nicht angemeldet!');
+                        window.location = "SignIn.html"
+                        return;
+                    }
+
+                    //benutzer abfrage
+                    var benutzerDatenDB = await loadUserFromSessionID(sessionID);
+                    if(!benutzerDatenDB.IDBENUTZER){
+                        alert('Sie sind nicht angemeldet!');
+                        window.location = "SignIn.html"
+                        return;
+                    }
+                    
+                    //Keine Bildatei ausgesucht
+                    if (bildDaten == null) {
+                        alert('Sie haben keine Dateien ausgewählt');
+                        return;
+                    }
+
+                    //Bild in Datenbank laden
+                    let formData = new FormData();
+                    formData.append('file', bildDaten);
+                    var bildDatenDB = await savePictureItemToBackend(formData,benutzerDatenDB.IDBENUTZER);
+
+                    //Kategorie in Datenbank laden
+                    var kategorieDataDB=null;
+                    for (i = 0; i < kategorieListe.length; i++) {
+                        kategorieDataDB=await loadKategorieFromDatabank(kategorieListe[i]);
+                        console.log(kategorieDataDB);
+                        if(kategorieDataDB.fehler){
+                            let neueKategorie = {
+                                idKategorie: nanoid(),
+                                bezeichnung: kategorieListe[i]
+                            };
+                            kategorieDataDB=await saveKategorieToDatabank(neueKategorie);
+                        }
+                        kategorieDataDB=null;
+                    }
+                });
             }
 
             //Kategorie
@@ -186,6 +223,26 @@
                 }
             }
 
+            async function loadKategorieFromDatabank(kategorieBezeichnung) {
+                let response = await fetch("http://localhost:8000/api/kategorie/bezeichnung/"+ kategorieBezeichnung);
+                var kategorieData = await response.json();
+                return kategorieData;
+            }
+
+            async function saveKategorieToDatabank(neueKategorie) {
+                let requestOptions = {
+                    method: "POST",
+                    body: JSON.stringify(neueKategorie),
+                    headers: {
+                        "body-type": "application/json"
+                    }
+                };
+                let response = await fetch("http://localhost:8000/api/kategorie/hinzuefugen",requestOptions);
+                var kategorieData = await response.json();
+                return kategorieData;
+            }
+
+
             //Bild
             function handleBild() {
                 bildDaten = this.files[0]; 
@@ -194,35 +251,54 @@
 
                 var imageHTML = document.createElement('img');
                 imageHTML.setAttribute("class", "pic");
-                imageHTML.setAttribute("data-id","pic")
+                imageHTML.setAttribute("id","pic")
                 imageHTML.setAttribute("src", bildBlobURL);
-                /*
-                var imageHTML = document.createElement('p');
-                imageHTML.setAttribute("class", "bildText");
-                imageHTML.innerHTML = bildDaten.name + " wurde hochgeladen";
-                */
+        
                 $('#bildInhalt').append(imageHTML);
-
-               // downloadURI(bildURL,'test.png');
             }
-
-            /*
-            function downloadURI(uri, name) {
-                var link = document.createElement("a");
-                link.download = name;
-                link.href = uri;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                link.remove();
-            }
-            */
 
             function clearBildfenser() {
                 if(document.querySelector("#bildInhalt p"))
                     document.querySelector("#bildInhalt p").remove();
                 if(document.querySelector("#bildInhalt img"))
                     document.querySelector("#bildInhalt img").remove();
+            }
+
+            async function savePictureItemToBackend(formData,benutzerID) {
+                let requestOptions = {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "body-type": "application/json"
+                    }
+                };
+                let response = await fetch("http://localhost:8000/api/bild/aufladen/"+benutzerID+"/"+ document.getElementById('pic').naturalWidth + 'x' + document.getElementById('pic').naturalHeight, requestOptions);
+                var bildData = await response.json();
+                return bildData;
+            }
+
+            //Benutzer
+            async function loadUserFromSessionID(sessionID) {
+                let response = await fetch("http://localhost:8000/api/benutzer/"+ sessionID);
+                var userData = await response.json();
+                return userData;
+            }
+
+            //Cookie
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
             }
         </script>
 	</body>

@@ -6,6 +6,33 @@ const md5 = require("md5");
 
 console.log('- Service Nutzer');
 
+serviceRouter.get('/benutzer/:sessionID', function(request, response) {
+    console.log('Service Benutzer: Client requested one record, sessionID=' + request.params.sessionID);
+
+    const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
+    try {
+        var obj = benutzerDao.loadBySessionID(request.params.sessionID);
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Benutzer: Error loading record by name or email. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+}); 
+
+serviceRouter.get('/benutzer/nameUndEmail/:name/:email', function(request, response) {
+    console.log('Service Benutzer: Client requested one record, name,email=' + request.params.name + "," + request.params.email);
+
+    const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
+    try {
+        benutzerDao.CheckName(request.params.name);
+        benutzerDao.CheckEmail(request.params.email);
+        response.status(200).json({"result": true});
+    } catch (ex) {
+        console.error('Service Benutzer: Error loading record by name or email. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+}); 
+
 //Für diese Abfrage muss mindestens ein Eintrag in der Tabelle Benutzer vorhanden sein.
 serviceRouter.get('/benutzer/nameUndEmail/:name/:email', function(request, response) {
     console.log('Service Benutzer: Client requested one record, name,email=' + request.params.name + "," + request.params.email);
@@ -14,13 +41,13 @@ serviceRouter.get('/benutzer/nameUndEmail/:name/:email', function(request, respo
     try {
         benutzerDao.CheckName(request.params.name);
         benutzerDao.CheckEmail(request.params.email);
-        console.log('Service Benutzer: User doesnt exist');
         response.status(200).json({"result": true});
     } catch (ex) {
         console.error('Service Benutzer: Error loading record by name or email. Exception occured: ' + ex.message);
         response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
     }
 }); 
+
 
 
 serviceRouter.post('/benutzer/', function(request, response) {

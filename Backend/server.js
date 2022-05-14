@@ -53,11 +53,11 @@ try {
     var serviceRouter = require('./services/benutzer.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    //serviceRouter = require('./services/bild.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    serviceRouter = require('./services/bild.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
-    //serviceRouter = require('./services/kategorie.js');
-    //app.use(TOPLEVELPATH, serviceRouter);
+    serviceRouter = require('./services/kategorie.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
     // send default error message if no matching endpoint found
     app.use(function (request, response) {
