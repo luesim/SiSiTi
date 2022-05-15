@@ -185,7 +185,6 @@
                     var kategorieDataDB=null;
                     for (i = 0; i < kategorieListe.length; i++) {
                         kategorieDataDB=await loadKategorieFromDatabank(kategorieListe[i]);
-                        console.log(kategorieDataDB);
                         if(kategorieDataDB.fehler){
                             let neueKategorie = {
                                 idKategorie: nanoid(),
@@ -193,8 +192,16 @@
                             };
                             kategorieDataDB=await saveKategorieToDatabank(neueKategorie);
                         }
-                        kategorieDataDB=null;
+                        //jeweilige Kategorie mit dem Bild in bild2Kategorie
+                        let neuesBildToKategorie= {
+                                idBild: bildDatenDB.IDBILD,
+                                idKategorie: kategorieDataDB.IDKATEGORIE
+                            };
+                        await saveBild2Kategorie(neuesBildToKategorie);
+                        
                     }
+                    alert("Das Bild wurde erfolgreich hochgeladen!");
+                    location.reload();
                 });
             }
 
@@ -234,7 +241,7 @@
                     method: "POST",
                     body: JSON.stringify(neueKategorie),
                     headers: {
-                        "body-type": "application/json"
+                        "content-type": "application/json"
                     }
                 };
                 let response = await fetch("http://localhost:8000/api/kategorie/hinzuefugen",requestOptions);
@@ -269,7 +276,7 @@
                     method: "POST",
                     body: formData,
                     headers: {
-                        "body-type": "application/json"
+                        "body-type": "json"
                     }
                 };
                 let response = await fetch("http://localhost:8000/api/bild/aufladen/"+benutzerID+"/"+ document.getElementById('pic').naturalWidth + 'x' + document.getElementById('pic').naturalHeight, requestOptions);
@@ -282,6 +289,18 @@
                 let response = await fetch("http://localhost:8000/api/benutzer/"+ sessionID);
                 var userData = await response.json();
                 return userData;
+            }
+
+            //Bild2Kategorie
+            async function saveBild2Kategorie(neuesBildToKategorie) {
+                let requestOptions = {
+                    method: "POST",
+                    body: JSON.stringify(neuesBildToKategorie),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                };
+                let response = await fetch("http://localhost:8000/api/bildToKategorie/hinzuefugen",requestOptions);
             }
 
             //Cookie

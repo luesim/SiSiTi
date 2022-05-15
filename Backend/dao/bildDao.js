@@ -11,8 +11,8 @@ class bildDao {
         return this._conn;
     }
 
-    loadByIdBenutzer(id) {
-        var sql = 'SELECT * FROM bild WHERE idBenutzer=?';
+    loadByIdBild(id) {
+        var sql = 'SELECT * FROM bild WHERE idBild=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -33,7 +33,7 @@ class bildDao {
         if (result.changes != 1) 
             throw new Error('Could not insert new Record. Data: ' + params);
 
-        return this.loadByIdBenutzer(idBenutzer);
+        return this.loadByIdBild(idbild);
     }
 }
 

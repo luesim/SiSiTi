@@ -48,7 +48,6 @@ class benutzerDao {
     }
 
     CheckEmail(email) {
-
         var sql = 'SELECT * FROM Benutzer WHERE ? NOT IN (SELECT email FROM Benutzer)';
         var statement = this._conn.prepare(sql);
         var result = statement.get(email);

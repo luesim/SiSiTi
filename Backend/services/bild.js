@@ -68,7 +68,7 @@ serviceRouter.post('/bild/aufladen/:benutzerid/:aufloesung', function(request, r
             }
 
             // send response 
-            response.status(200).json(fileObj);
+            response.status(200).json(savedObj);
         }
         
     } catch (err) {        
