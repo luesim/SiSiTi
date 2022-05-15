@@ -176,6 +176,12 @@
                         return;
                     }
 
+                    //Keine Kategorie ausgewaehlt
+                    if (kategorieListe.length <= 0) {
+                        alert('Sie haben keine Kategorie ausgewählt');
+                        return;
+                    }
+
                     //Bild in Datenbank laden
                     let formData = new FormData();
                     formData.append('file', bildDaten);
