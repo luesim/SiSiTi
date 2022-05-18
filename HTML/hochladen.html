@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>SiSiTi - Hochladen</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
         <link rel="stylesheet" type="text/css" href="lib/hochladen.css">
 	</head>
@@ -41,34 +42,30 @@
                 <h1><a href="Home.html">&#8249; Hochladen</a></h1>
             </div>
             <section class="kategorie">
-                <form>
+                <form id="uploadForm" enctype="multipart/form-data" method="post">
                     <label for="kategorieEingabe"><h3>Geben Sie hier die jeweilige Kategorien des Bildes ein:</h3></label>
                     <input type="text" id="kategorieTxt" name="kategorieEingabe"><br><br>
                     <input type="submit" id="kategorieBtn" value="Kategorie hinzufügen">
                 </form>
                 <br>
                 <br>
-                <h3>Hier sind Ihre eingegebenen Kategorien:</h3>
+                <h3>Hier sind Ihre eingegebenen Kategorien (max. 3):</h3>
+                <p class="loeschenHinweis"> (Zum löschen auf die jeweilige Kategorie klicken) </p>
                 <ul id="kategorieListe" width="50%" height="25px" border="1">
-                    <li>Hund <a href="hochladen.html">&#10006;</a></li>
-                    <li>Süß <a href="hochladen.html">&#10006;</a></li>
-                    <li>Grün <a href="hochladen.html">&#10006;</a></li>
                 </ul>
             </section>
             <section class="hochladen">
-                <div class="auswahl">
-                    Bild zum Hochladen hier ablegen
-                    <br><br><br><br>
-                    <form>
-                        <input type="button" id="bildAuswaehlenBtn1" value="Bild auswählen">
-                    </form>
+                <div class="auswahl" id="bildInhalt">
+                    <p id="bildText">Bild zum Hochladen unten ausw&auml;hlen</p>
                 </div>
                 <div>
                 <table width="60%" height="50px" class="buttonBild">
                     <tr>
-                        <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
-                        <td><input type="button" id="bildAuswaehlenBtn2" value="Bild auswählen"></td>
-                        <td><input type="button" id="bildHochladenBtn" value="Hochladen"></td>
+                        <form id="uploadForm" enctype="multipart/form-data" method="post">
+                            <td><input type="button" id="bildLoeschenBtn" value="Löschen"></td>
+                            <td><input type="file" id="bildAuswaehlenBtn" accept="image/*"><label for="bildAuswaehlenBtn">Bild auswählen</label></td>
+                            <td><input type="submit" id="bildHochladenBtn" value="Hochladen"></td>
+                        </form>
                     </tr>
                 </table>
                 </div>
@@ -80,31 +77,254 @@
                         <td>max. Dateigr&ouml;ße:</td>
                         <td>1MB</td>
                     </tr>  
-                        <tr>
-                            <td>Auflösung:</td>
-                            <td>1920x1271</td>
-                        </tr>   
-                        <tr>
-                        <tr>
-                            <td>max. Auflösung:</td>
-                            <td>4.096 x 2.160</td>
-                        </tr>  
-                        <tr>
-                            <td>Erlaubte Bildformate:</td>
-                            <td>PNG,JPG</td>
-                        </tr>  
+                    <tr>
+                        <td>Erlaubte Bildformate:</td>
+                        <td>Alle</td>
+                    </tr>  
                 </table>
             </section>
         </main>
         <footer>
             <div class="footerText">
-          &#169; SiSiTi
-          <p class="footerRight">
-            <a href="AGB.html" >AGBs</a>
-            &Iota;
-            <a href="impressum.html"> Impressum</a>
-          </p>
-      </div>
+                &#169; SiSiTi
+                <p class="footerRight">
+                    <a href="AGB.html" >AGBs</a>
+                    &Iota;
+                    <a href="impressum.html"> Impressum</a>
+                </p>
+            </div>
         </footer>
+        <script type="module">
+            import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
+            // make nanoid globally available
+            window.nanoid = nanoid;
+        </script>
+        <script>
+            var kategorieListe = [];
+            var bildDaten = null;
+            const reader  = new FileReader();
+
+            document.addEventListener("DOMContentLoaded", init);
+
+            async function init() {
+                console.log(" * Page ready!");
+
+                //Kategorien
+                var saveKategorieBtn = document.querySelector("#kategorieBtn");
+                
+                saveKategorieBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+
+                    var katgeorieTxt = document.querySelector('#kategorieTxt');
+                    kategorieTxt.value = katgeorieTxt.value.toLowerCase();
+            
+                    if(kategorieListe.length >= 3 || !katgeorieTxt.value || kategorieListe.includes(katgeorieTxt.value)){
+                        katgeorieTxt.value = '';
+                        return;
+                    }
+
+
+                    var neueKategorieInHTML = document.createElement('li');
+                    neueKategorieInHTML.innerHTML = katgeorieTxt.value;
+                    neueKategorieInHTML.addEventListener("click", removeKategorie);
+                    
+                    kategorieListe.push(katgeorieTxt.value);
+                    katgeorieTxt.value = '';
+                    $('#kategorieListe').append(neueKategorieInHTML);
+
+                });
+
+                //Bild
+                var bildElement = document.getElementById("bildAuswaehlenBtn");
+                bildElement.addEventListener("change", handleBild, false);
+
+                var loeschBildBtn = document.querySelector("#bildLoeschenBtn");
+                loeschBildBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+                    clearBildfenser();
+                    bildDaten = null;
+
+                    var imageHTML = document.createElement('p');
+                    imageHTML.setAttribute("class", "bildText");
+                    imageHTML.innerHTML = "Bild zum Hochladen unten ausw&auml;hlen";
+                    $('#bildInhalt').append(imageHTML);
+                });
+
+                var hochladenBildBtn = document.querySelector("#bildHochladenBtn");
+                hochladenBildBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+
+                    var sessionID = getCookie("SessionID");
+                    //benutzer abfrage
+                    if(!sessionID){
+                        alert('Sie sind nicht angemeldet!');
+                        window.location = "SignIn.html"
+                        return;
+                    }
+
+                    //benutzer abfrage
+                    var benutzerDatenDB = await loadUserFromSessionID(sessionID);
+                    if(!benutzerDatenDB.IDBENUTZER){
+                        alert('Sie sind nicht angemeldet!');
+                        window.location = "SignIn.html"
+                        return;
+                    }
+                    
+                    //Keine Bildatei ausgesucht
+                    if (bildDaten == null) {
+                        alert('Sie haben keine Dateien ausgewählt');
+                        return;
+                    }
+
+                    //Keine Kategorie ausgewaehlt
+                    if (kategorieListe.length <= 0) {
+                        alert('Sie haben keine Kategorie ausgewählt');
+                        return;
+                    }
+
+                    //Bild in Datenbank laden
+                    let formData = new FormData();
+                    formData.append('file', bildDaten);
+                    var bildDatenDB = await savePictureItemToBackend(formData,benutzerDatenDB.IDBENUTZER);
+
+                    //Kategorie in Datenbank laden
+                    var kategorieDataDB=null;
+                    for (i = 0; i < kategorieListe.length; i++) {
+                        kategorieDataDB=await loadKategorieFromDatabank(kategorieListe[i]);
+                        if(kategorieDataDB.fehler){
+                            let neueKategorie = {
+                                idKategorie: nanoid(),
+                                bezeichnung: kategorieListe[i]
+                            };
+                            kategorieDataDB=await saveKategorieToDatabank(neueKategorie);
+                        }
+                        //jeweilige Kategorie mit dem Bild in bild2Kategorie
+                        let neuesBildToKategorie= {
+                                idBild: bildDatenDB.IDBILD,
+                                idKategorie: kategorieDataDB.IDKATEGORIE
+                            };
+                        await saveBild2Kategorie(neuesBildToKategorie);
+                        
+                    }
+                    alert("Das Bild wurde erfolgreich hochgeladen!");
+                    location.reload();
+                });
+            }
+
+            //Kategorie
+            async function removeKategorie(clickEvent) {
+                var li = clickEvent.currentTarget;
+                var neueKategorieListe = kategorieListe.filter(kategorie => kategorie != li.innerHTML);
+                kategorieListe = neueKategorieListe;
+
+                clearKategorie();
+                addAllKategorien();
+            }
+
+            function clearKategorie() {
+                var listKategorie = document.querySelectorAll("#kategorieListe li");
+                listKategorie.forEach(kategorie => kategorie.remove());
+            }
+
+            function addAllKategorien() {
+                for (let i=0; i<kategorieListe.length; i++) {
+                    var neueKategorieInHTML = document.createElement('li');
+                    neueKategorieInHTML.innerHTML = kategorieListe[i];
+                    neueKategorieInHTML.addEventListener("click", removeKategorie);
+                    
+                    $('#kategorieListe').append(neueKategorieInHTML);
+                }
+            }
+
+            async function loadKategorieFromDatabank(kategorieBezeichnung) {
+                let response = await fetch("http://localhost:8000/api/kategorie/bezeichnung/"+ kategorieBezeichnung);
+                var kategorieData = await response.json();
+                return kategorieData;
+            }
+
+            async function saveKategorieToDatabank(neueKategorie) {
+                let requestOptions = {
+                    method: "POST",
+                    body: JSON.stringify(neueKategorie),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                };
+                let response = await fetch("http://localhost:8000/api/kategorie/hinzuefugen",requestOptions);
+                var kategorieData = await response.json();
+                return kategorieData;
+            }
+
+
+            //Bild
+            function handleBild() {
+                bildDaten = this.files[0]; 
+                bildBlobURL = URL.createObjectURL(bildDaten);
+                clearBildfenser();
+
+                var imageHTML = document.createElement('img');
+                imageHTML.setAttribute("class", "pic");
+                imageHTML.setAttribute("id","pic")
+                imageHTML.setAttribute("src", bildBlobURL);
+        
+                $('#bildInhalt').append(imageHTML);
+            }
+
+            function clearBildfenser() {
+                if(document.querySelector("#bildInhalt p"))
+                    document.querySelector("#bildInhalt p").remove();
+                if(document.querySelector("#bildInhalt img"))
+                    document.querySelector("#bildInhalt img").remove();
+            }
+
+            async function savePictureItemToBackend(formData,benutzerID) {
+                let requestOptions = {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "body-type": "json"
+                    }
+                };
+                let response = await fetch("http://localhost:8000/api/bild/aufladen/"+benutzerID+"/"+ document.getElementById('pic').naturalWidth + 'x' + document.getElementById('pic').naturalHeight, requestOptions);
+                var bildData = await response.json();
+                return bildData;
+            }
+
+            //Benutzer
+            async function loadUserFromSessionID(sessionID) {
+                let response = await fetch("http://localhost:8000/api/benutzer/"+ sessionID);
+                var userData = await response.json();
+                return userData;
+            }
+
+            //Bild2Kategorie
+            async function saveBild2Kategorie(neuesBildToKategorie) {
+                let requestOptions = {
+                    method: "POST",
+                    body: JSON.stringify(neuesBildToKategorie),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                };
+                let response = await fetch("http://localhost:8000/api/bildToKategorie/hinzuefugen",requestOptions);
+            }
+
+            //Cookie
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+        </script>
 	</body>
 </html>

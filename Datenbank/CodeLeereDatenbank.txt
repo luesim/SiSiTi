@@ -1,0 +1,1 @@
+INSERT INTO Benutzer (idBenutzer,name,email,passwort,sessionID) VALUES (1,"admin","admin@gmail.com",123456,1)

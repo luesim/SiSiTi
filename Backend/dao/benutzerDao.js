@@ -23,6 +23,18 @@ class benutzerDao {
         return result;
     }
 
+    loadBySessionID(sessionID) {
+
+        var sql = 'SELECT * FROM Benutzer WHERE sessionID=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(sessionID);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by sessionID=' + id);
+
+        return result;
+    }
+
     CheckName(name) {
 
         var sql = 'SELECT * FROM Benutzer WHERE ? NOT IN (SELECT name FROM Benutzer)';
@@ -36,7 +48,6 @@ class benutzerDao {
     }
 
     CheckEmail(email) {
-
         var sql = 'SELECT * FROM Benutzer WHERE ? NOT IN (SELECT email FROM Benutzer)';
         var statement = this._conn.prepare(sql);
         var result = statement.get(email);

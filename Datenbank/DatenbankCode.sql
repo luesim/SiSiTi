@@ -94,7 +94,7 @@ IDBENUTZER
 create table BILD2KATEGORIE (
    IDBILD               INT4                 not null,
    IDKATEGORIE          INT4                 not null,
-   constraint PK_BILD2KATEGORIE primary key (IDBILD, IDKATEGORIE)
+   /*constraint PK_BILD2KATEGORIE primary key (IDBILD, IDKATEGORIE)*/
    constraint FK_BILD2KAT_BILD_HAT__BILD foreign key (IDBILD)
       references BILD (IDBILD)
       on delete restrict on update restrict
