@@ -25,12 +25,9 @@
                         <td class="symbol" width="1%">
                           <a title="BildHochladen" href="hochladen.html" class="link"> <img src="pics/hochladen.png" width="40" height="40" alt="Hochladen"> </a>
                       </td>
-                        <td class="symbol" width="1%">
-                            <a title="Zip" href="Warenkorb.html" class="link"> <img src="pics/zip.png" width="40" height="40" alt="Zip"> </a>
-                        </td>
-                        <td class="symbol" width="1%">
-                            <a title="Anmelden" href="SignIn.html" class="link"> <img src="pics/login.png" width="40" height="40" alt="Login"> </a>
-                        </td>
+                      <td class="symbol" width="1%">
+                        <a title="Anmelden"  id="aAcc" href="SignIn.html" class="link"> <img src="pics/login.png" id="imgAcc" width="40" height="40" alt="Login"> </a>
+                      </td>
                     </tr>
                 </table>
             </nav>
@@ -61,24 +58,53 @@
 		    </footer>
         <script>
           document.addEventListener("DOMContentLoaded", init);
+            async function init() {
+              var tmp = '';
+                console.log(" * Page ready!");
+                var sessionID = getCookie("SessionID");
+                var benutzerDatenDB = await loadUserFromSessionID(sessionID);
 
-                      async function init() {
-                        var tmp = '';
-                          console.log(" * Page ready!");
-                          // for (i = 0; i < response.length; i++) {
+                //benutzer abfrage
+                if(sessionID && benutzerDatenDB.IDBENUTZER){
+                    document.getElementById("aAcc").setAttribute("href", "Profil.html");
+                    document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
+                }
+                // for (i = 0; i < response.length; i++) {
 
-                              //var obj = response[i];
+                    //var obj = response[i];
 
-                              tmp += '<section class=galerie id=100>';
-                              tmp += '<a href=Bild.html>';
-                              tmp += '<img src=pics\\Beispiele\\Bsp1.jpg alt=Bsp1 width="600" height="400">';
-                              tmp += '</a>';
-                              tmp += '</section';
-                              
-                          //}
-                          $('#maingalerie').append(tmp);
-                            
-                      };
+                    tmp += '<section class=galerie id=100>';
+                    tmp += '<a href=Bild.html>';
+                    tmp += '<img src=pics\\Beispiele\\Bsp1.jpg alt=Bsp1 width="600" height="400">';
+                    tmp += '</a>';
+                    tmp += '</section';
+                    
+                //}
+                $('#maingalerie').append(tmp);
+                  
+            };
+
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            async function loadUserFromSessionID(sessionID) {
+                let response = await fetch("http://localhost:8000/api/benutzer/"+ sessionID);
+                var userData = await response.json();
+                return userData;
+            }
         </script>
 	</body>
 </html>

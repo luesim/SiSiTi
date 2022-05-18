@@ -30,7 +30,7 @@ class benutzerDao {
         var result = statement.get(sessionID);
 
         if (helper.isUndefined(result)) 
-            throw new Error('No Record found by sessionID=' + id);
+            throw new Error('No Record found by sessionID=' + sessionID);
 
         return result;
     }
