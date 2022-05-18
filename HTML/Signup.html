@@ -69,14 +69,15 @@
 
                 async function init() {
                     console.log(" * Page ready!");
-
                     var sessionID = getCookie("SessionID");
-                    var benutzerDatenDB = await loadUserFromSessionID(sessionID);
-    
+
                     //benutzer abfrage
-                    if(sessionID && benutzerDatenDB.IDBENUTZER){
-                        document.getElementById("aAcc").setAttribute("href", "Profil.html");
+                    if(sessionID){
+                        var benutzerDatenDB = await loadUserFromSessionID(sessionID);
+                        if(benutzerDatenDB.IDBENUTZER){
+                            document.getElementById("aAcc").setAttribute("href", "Profil.html");
                         document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
+                        }
                     }
         
                     var saveBtn = document.querySelector("#signupbtn");

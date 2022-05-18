@@ -59,20 +59,21 @@
         <script>
           document.addEventListener("DOMContentLoaded", init);
             async function init() {
-              var tmp = '';
-                console.log(" * Page ready!");
-                var sessionID = getCookie("SessionID");
-                var benutzerDatenDB = await loadUserFromSessionID(sessionID);
+              console.log(" * Page ready!");
+              var sessionID = getCookie("SessionID");
 
-                //benutzer abfrage
-                if(sessionID && benutzerDatenDB.IDBENUTZER){
-                    document.getElementById("aAcc").setAttribute("href", "Profil.html");
-                    document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
-                }
+              //benutzer abfrage
+              if(sessionID){
+                  var benutzerDatenDB = await loadUserFromSessionID(sessionID);
+                  if(benutzerDatenDB.IDBENUTZER){
+                      document.getElementById("aAcc").setAttribute("href", "Profil.html");
+                  document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
+                  }
+              }
                 // for (i = 0; i < response.length; i++) {
 
                     //var obj = response[i];
-
+                    var tmp = '';
                     tmp += '<section class=galerie id=100>';
                     tmp += '<a href=Bild.html>';
                     tmp += '<img src=pics\\Beispiele\\Bsp1.jpg alt=Bsp1 width="600" height="400">';
