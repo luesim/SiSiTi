@@ -35,6 +35,16 @@ class bildDao {
 
         return this.loadByIdBild(idbild);
     }
+    loadBildAll() {
+        var sql = 'SELECT * FROM bild';
+        var statement = this._conn.prepare(sql);
+        var result = statement.all();
+
+        if (helper.isArrayEmpty(result)) 
+            return [];
+        
+        return result;
+    }
 }
 
 module.exports = bildDao;

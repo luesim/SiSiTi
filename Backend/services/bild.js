@@ -75,5 +75,19 @@ serviceRouter.post('/bild/aufladen/:benutzerid/:aufloesung', function(request, r
         response.status(400).json({'fehler': true, 'nachricht': 'Fehler im Service'});
     }
 });
+serviceRouter.get('/bild/zurückgeben/alle', function(request, response) {
+    console.log('Service Bild: Client requested one record, id=' + request.params.id);
+
+    const bildDao = new BildDao(request.app.locals.dbConnection);
+    try {
+        var obj = bildDao.loadById(request.params.id);
+        console.log('Service Bild: Record loaded');
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Bild: Error loading record by id. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
 
 module.exports = serviceRouter;
