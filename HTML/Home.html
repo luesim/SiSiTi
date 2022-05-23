@@ -70,20 +70,62 @@
                   document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
                   }
               }
-                // for (i = 0; i < response.length; i++) {
-
-                    //var obj = response[i];
-                    var tmp = '';
-                    tmp += '<section class=galerie id=100>';
-                    tmp += '<a href=Bild.html>';
-                    tmp += '<img src=pics\\Beispiele\\Bsp1.jpg alt=Bsp1 width="600" height="400">';
-                    tmp += '</a>';
-                    tmp += '</section';
-                    
-                //}
-                $('#maingalerie').append(tmp);
-                  
+              loadAndDisplayAllPictures();
             };
+            function loadAndDisplayAllPictures() {
+                  console.log('loading all recs from api');
+
+                  $.ajax({
+                      url: 'http://localhost:8000/api/bild/alle',
+                      method: 'get',
+                      contentType: 'application/json; charset=utf-8',
+                      cache: false,
+                      dataType: 'json'
+                  }).done(function (response) {
+                      console.log(response);
+                      renderPictures(response);                
+                  }).fail(function (jqXHR, statusText, error) {
+                      console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+                      $('#output').html('Ein Fehler ist aufgetreten');
+                      $('#pics').text('Keine Bilder vorhanden');
+                  });
+            } 
+            function renderPictures(response) {
+            var node = $('#maingalerie');
+
+            node.empty();
+            
+            if (response.length == 0) {
+                node.text('Keine Bilder vorhanden');
+                return;
+            }
+
+            node.append($('<p>').text('Anzahl Bilder: ' + response.length));
+
+            
+                var tmp = '';
+
+                for (i = 0; i < response.length; i++) {
+                    var obj = response[i];
+                    tmp += '<section class=galerie id=';
+                    tmp += obj.IDBILD + '>'
+                    tmp += '<a href=bild.html>';
+                    tmp += '<img src="../public/' + obj.BILDPFAD + '" width="600" height="400">';
+                    tmp += '</a>';
+                    tmp += '<section class="searchdesc">';
+                    tmp += '<table><tr>';
+                    tmp += '<td><section class="links"><a href="bild.html">' + obj.BILDNAME  + '</a></section></td></tr>';
+                    tmp += '<tr><td><section class="links">' + obj.AUFLOESUNG + '</section></td>';
+                    tmp += '</tr></table></section>';
+                    tmp += '</section>';
+                    
+                    
+                }
+            node.append(tmp);
+            
+        }
+                  
+            
 
             function getCookie(cname) {
                 let name = cname + "=";
