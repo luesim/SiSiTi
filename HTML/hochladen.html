@@ -186,6 +186,10 @@
                     let formData = new FormData();
                     formData.append('file', bildDaten);
                     var bildDatenDB = await savePictureItemToBackend(formData,benutzerDatenDB.IDBENUTZER);
+                    if (bildDatenDB.fehler){
+                        alert('Bild ist bereits hochgeladen');
+                        return;
+                    }
 
                     //Kategorie in Datenbank laden
                     var kategorieDataDB=null;

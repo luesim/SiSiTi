@@ -65,6 +65,7 @@ serviceRouter.post('/bild/aufladen/:benutzerid/:aufloesung', function(request, r
                 }
             } else {
                 console.log('item is no webPicture or already present, skipping it');
+                response.status(400).json({'fehler': true, 'nachricht': 'Bild schon hochgeladen'});
             }
 
             // send response 
