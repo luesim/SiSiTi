@@ -109,7 +109,7 @@
                     var obj = response[i];
                     tmp += '<section class=galerie id=';
                     tmp += obj.IDBILD + '>'
-                    tmp += '<a href=bild.html>';
+                    tmp += '<a href=bild.html?id='+ obj.IDBILD +'>';
                     tmp += '<img src="../public/' + obj.BILDPFAD + '" width="600" height="400">';
                     tmp += '</a>';
                     tmp += '<section class="searchdesc">';

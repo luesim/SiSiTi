@@ -20,6 +20,18 @@ class bildToKategorieDao {
             throw new Error('Could not insert new Record. Data: ' + params);
         return;
     }
+    loadKategorieIdbyBildId(idBild=''){
+        var sql = 'SELECT * FROM bild2kategorie WHERE idBild=?';
+        var statement = this._conn.prepare(sql);
+        //var result = statement.get(idBild);
+        var result = statement.all(idBild);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by idBild=' + id);
+        result.DATUM = helper.formatToGermanDateTime(helper.parseSQLDateTimeString(result.DATUM));
+
+        return result
+}
 }
 
 module.exports = bildToKategorieDao;
