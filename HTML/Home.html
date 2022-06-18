@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
         <link rel="stylesheet" type="text/css" href="lib/Home.css">
         <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="js/urlParameter.js"></script>
 	</head>
 	<body>
         <header>
@@ -17,10 +18,10 @@
                 <table width="100%" height="70px">
                     <tr>
                         <td class="suchfeldLinksAbstand" width="97%">
-                          <form class="suchfeldHoehe">
-                            <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche"> 
-                            <input type="submit" id="searchBtn" value="Suche">
-                        </form>
+                            <form class="suchfeldHoehe" action="search()">
+                                <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche" name="eingabe"> 
+                                <input type="submit" id="searchBtn" value="Suche"> 
+                            </form>
                         </td>
                         <td class="symbol" width="1%">
                           <a title="BildHochladen" href="hochladen.html" class="link"> <img src="pics/hochladen.png" width="40" height="40" alt="Hochladen"> </a>
@@ -57,21 +58,64 @@
           </div>
 		    </footer>
         <script>
-          document.addEventListener("DOMContentLoaded", init);
+            document.addEventListener("DOMContentLoaded", init);
             async function init() {
-              console.log(" * Page ready!");
-              var sessionID = getCookie("SessionID");
+                console.log(" * Page ready!");
+                var sessionID = getCookie("SessionID");
 
-              //benutzer abfrage
-              if(sessionID){
-                  var benutzerDatenDB = await loadUserFromSessionID(sessionID);
-                  if(benutzerDatenDB.IDBENUTZER){
-                      document.getElementById("aAcc").setAttribute("href", "Profil.html");
-                  document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
-                  }
-              }
-              loadAndDisplayAllPictures();
+                //benutzer abfrage
+                if(sessionID){
+                    var benutzerDatenDB = await loadUserFromSessionID(sessionID);
+                    if(benutzerDatenDB.IDBENUTZER){
+                        document.getElementById("aAcc").setAttribute("href", "Profil.html");
+                    document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
+                    }
+                }
+                // get id from url parameter
+                var id = -1;
+
+                if (existsUrlParameter('id')){
+                    id = getUrlParameterValue('id');
+                    loadAndDisplaySearchPictures(id);
+                } 
+                 console.log('target picture id=' + id);
+                if (id == -1) {
+                    loadAndDisplayAllPictures();
+                }
+                
+                var SearchBtn = document.querySelector("#searchBtn");
+                SearchBtn.addEventListener("click", async (clickEvent) => {
+                clickEvent.preventDefault();
+                var input = document.querySelector("#searchTxt").value;
+                window.open("home.html?="+input)
+
+
+                });
             };
+            
+
+
+            function loadAndDisplaySearchPictures(Kategorie) {
+                  console.log('loading all recs from api');
+
+                  $.ajax({
+                      url: 'http://localhost:8000/api/bild/alle/'+Kategorie,
+                      method: 'get',
+                      contentType: 'application/json; charset=utf-8',
+                      cache: false,
+                      dataType: 'json'
+                  }).done(function (response) {
+                      console.log(response);
+                      renderPictures(response);                
+                  }).fail(function (jqXHR, statusText, error) {
+                      console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+                      $('#output').html('Ein Fehler ist aufgetreten');
+                      $('#pics').text('Keine Bilder vorhanden');
+                  });
+            } 
+
+
+
             function loadAndDisplayAllPictures() {
                   console.log('loading all recs from api');
 
@@ -91,16 +135,16 @@
                   });
             } 
             function renderPictures(response) {
-            var node = $('#maingalerie');
+                var node = $('#maingalerie');
 
-            node.empty();
-            
-            if (response.length == 0) {
-                node.text('Keine Bilder vorhanden');
-                return;
-            }
+                node.empty();
+                
+                if (response.length == 0) {
+                    node.text('Keine Bilder vorhanden');
+                    return;
+                }
 
-            node.append($('<p>').text('Anzahl Bilder: ' + response.length));
+                node.append($('<p>').text('Anzahl Bilder: ' + response.length));
 
             
                 var tmp = '';
@@ -121,9 +165,9 @@
                     
                     
                 }
-            node.append(tmp);
+                node.append(tmp);
             
-        }
+            }
                   
             
 

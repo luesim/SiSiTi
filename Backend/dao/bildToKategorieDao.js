@@ -21,10 +21,22 @@ class bildToKategorieDao {
         return;
     }
     loadKategorieIdbyBildId(idBild=''){
-        var sql = 'SELECT * FROM bild2kategorie WHERE idBild=?';
+        var sql = 'SELECT * FROM kategorie inner join bild2kategorie on kategorie.IDKATEGORIE=bild2kategorie.IDKATEGORIE WHERE bild2kategorie.idBild=?';
         var statement = this._conn.prepare(sql);
         //var result = statement.get(idBild);
         var result = statement.all(idBild);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by idBild=' + id);
+        result.DATUM = helper.formatToGermanDateTime(helper.parseSQLDateTimeString(result.DATUM));
+
+        return result
+}
+    loadByKategoriename(Kategoriename=''){
+        var sql = 'SELECT * FROM bild inner join bild2kategorie on kategorie.IDKATEGORIE=bild2kategorie.IDKATEGORIE WHERE kategorie.BEZEICHNUNG=?';
+        var statement = this._conn.prepare(sql);
+        //var result = statement.get(idBild);
+        var result = statement.all(Kategoriename);
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by idBild=' + id);

@@ -159,9 +159,9 @@
                     dataType: 'json'
                 }).done(function (response) {
                     console.log(response);
-                    $('#Kat1').text(response[0]);
-                    $('#Kat2').text(response[1]);
-                    $('#Kat3').text(response[2]);
+                    $('#Kat1').text(response[0].BEZEICHNUNG);
+                    $('#Kat2').text(response[1].BEZEICHNUNG);
+                    $('#Kat3').text(response[2].BEZEICHNUNG);
                 });
 
             };
