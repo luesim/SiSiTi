@@ -18,7 +18,7 @@
                 <table width="100%" height="70px">
                     <tr>
                         <td class="suchfeldLinksAbstand" width="97%">
-                            <form class="suchfeldHoehe" action="search()">
+                            <form class="suchfeldHoehe" >
                                 <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche" name="eingabe"> 
                                 <input type="submit" id="searchBtn" value="Suche"> 
                             </form>
@@ -71,47 +71,53 @@
                     document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
                     }
                 }
+                
                 // get id from url parameter
                 var id = -1;
 
-                if (existsUrlParameter('id')){
-                    id = getUrlParameterValue('id');
+                if (existsUrlParameter('kategorie')){
+                    id = getUrlParameterValue('kategorie');
                     loadAndDisplaySearchPictures(id);
-                } 
-                 console.log('target picture id=' + id);
+                    
+                }   
+                
+                console.log('target picture id=' + id);
+
                 if (id == -1) {
                     loadAndDisplayAllPictures();
-                }
+                    
+                }      
+
                 
                 var SearchBtn = document.querySelector("#searchBtn");
+                
                 SearchBtn.addEventListener("click", async (clickEvent) => {
                 clickEvent.preventDefault();
-                var input = document.querySelector("#searchTxt").value;
-                window.open("home.html?="+input)
-
-
+                var eingang = document.querySelector("#searchTxt").value;
+                window.open("home.html?kategorie="+eingang.toLowerCase(),"_self");
                 });
+ 
             };
             
-
 
             function loadAndDisplaySearchPictures(Kategorie) {
                   console.log('loading all recs from api');
 
                   $.ajax({
-                      url: 'http://localhost:8000/api/bild/alle/'+Kategorie,
+                      url: 'http://localhost:8000/api/bildtoKategorie/alle/'+Kategorie,
                       method: 'get',
                       contentType: 'application/json; charset=utf-8',
                       cache: false,
                       dataType: 'json'
                   }).done(function (response) {
                       console.log(response);
-                      renderPictures(response);                
+                      renderPictures(response,true,Kategorie);                
                   }).fail(function (jqXHR, statusText, error) {
                       console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
                       $('#output').html('Ein Fehler ist aufgetreten');
                       $('#pics').text('Keine Bilder vorhanden');
                   });
+                  
             } 
 
 
@@ -127,24 +133,27 @@
                       dataType: 'json'
                   }).done(function (response) {
                       console.log(response);
-                      renderPictures(response);                
+                      renderPictures(response,false);                
                   }).fail(function (jqXHR, statusText, error) {
                       console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
                       $('#output').html('Ein Fehler ist aufgetreten');
                       $('#pics').text('Keine Bilder vorhanden');
                   });
+                  
             } 
-            function renderPictures(response) {
+
+            function renderPictures(response,isSearch,eingabe="") {
                 var node = $('#maingalerie');
 
                 node.empty();
-                
-                if (response.length == 0) {
-                    node.text('Keine Bilder vorhanden');
+                if(isSearch&&response.length ==0){
+                    node.append($('<p>').text('Es existiert kein Bild mit der Kategorie: ' + eingabe ));
                     return;
                 }
 
                 node.append($('<p>').text('Anzahl Bilder: ' + response.length));
+                node.append($('<p>').text('Suche: ' + eingabe ));
+                
 
             
                 var tmp = '';

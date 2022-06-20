@@ -89,6 +89,9 @@ serviceRouter.get('/bild/alle', function(request, response) {
         response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
     }
 });
+
+
+
 serviceRouter.get('/bild/:id', function(request, response) {
     console.log('Service Bild: Client requested one record, id=' + request.params.id);
 
