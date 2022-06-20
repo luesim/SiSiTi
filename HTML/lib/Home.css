@@ -52,3 +52,20 @@ section.desc:hover{
 .bannertext{
     height: 100%;
 }
+section.searchdesc {
+    padding: 15px;
+    text-align: center;  
+    display: block ruby; 
+}
+
+.links:hover{
+    border:1px solid #777;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+section.main{
+    padding: 10px;
+}

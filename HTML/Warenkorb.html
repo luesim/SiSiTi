@@ -18,7 +18,7 @@
                     <tr>
                         <td class="suchfeldLinksAbstand" width="97%">
                             <form class="suchfeldHoehe">
-                                <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche"> 
+                                <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche" name="eingabe"> 
                                 <input type="submit" id="searchBtn" value="Suche">
                             </form>
                         </td>
@@ -83,6 +83,13 @@
                         document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
                         }
                     }
+                    var SearchBtn = document.querySelector("#searchBtn");
+                    
+                    SearchBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+                    var eingang = document.querySelector("#searchTxt").value;
+                    window.open("home.html?kategorie="+eingang.toLowerCase(),"_self");
+                    });
                 }
 
             function getCookie(cname) {

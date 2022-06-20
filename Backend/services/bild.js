@@ -77,4 +77,35 @@ serviceRouter.post('/bild/aufladen/:benutzerid/:aufloesung', function(request, r
     }
 });
 
+serviceRouter.get('/bild/alle', function(request, response) {
+    console.log('Service Bild: Client requested all records');
+
+    const bildDao = new BildDao(request.app.locals.dbConnection);
+    try {
+        var arr = bildDao.loadBildAll();
+        console.log('Service Bild: Records loaded, count=' + arr.length);
+        response.status(200).json(arr);
+    } catch (ex) {
+        console.error('Service Bild: Error loading all records. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
+
+
+serviceRouter.get('/bild/:id', function(request, response) {
+    console.log('Service Bild: Client requested one record, id=' + request.params.id);
+
+    const bildDao = new BildDao(request.app.locals.dbConnection);
+    try {
+        var obj = bildDao.loadByIdBild(request.params.id);
+        console.log('Service Bild: Record loaded');
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Bild: Error loading record by id. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
+
 module.exports = serviceRouter;

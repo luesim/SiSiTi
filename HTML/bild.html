@@ -7,6 +7,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
         <link rel="stylesheet" type="text/css" href="lib/bild.css">
+        <script src="js/urlParameter.js"></script>
+        
 	</head>
 	<body>
         <header>
@@ -18,7 +20,7 @@
                     <tr>
                         <td class="suchfeldLinksAbstand" width="97%">
                             <form class="suchfeldHoehe">
-                                <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche"> 
+                                <input type="text" class="suchfeld" id="searchTxt" placeholder="Suche" name="eingabe"> 
                                 <input type="submit" id="searchBtn" value="Suche">
                             </form>
                         </td>
@@ -39,8 +41,8 @@
                 <a href="Home.html">&#8249; Zurück</a>
             </section>
             <section class="LinkeHaelfte">
-                <div class="bildDiv">
-                    <img src="pics/bildBeispiel.jpg" width="700" height="400" class="bild" alt="Bild">
+                <div class="bildDiv" id="BildDatei">
+                    <!--<img width="700" height="400" class="bild" alt="Bild">-->
                 </div>
             </section>
             <section class="RechteHaelfte">
@@ -49,20 +51,20 @@
                         <caption><p class="ueberschrift">Bildinformationen:</p></caption>
                         <tr>
                             <td>Bildname:</td>
-                            <td>hund.png</td>
+                            <td id="bildname"></td>
                         </tr>  
                         <tr>
                             <td>Auflösung:</td>
-                            <td>1920x1271</td>
+                            <td id="aufloesung"></td>
                         </tr>   
                         <tr>
                         <tr>
                             <td>Bildtyp:</td>
-                            <td>JPG</td>
+                            <td id="bildtyp"></td>
                         </tr>  
                         <tr>
                             <td>Veröffentlicht:</td>
-                            <td>01.04.2022</td>
+                            <td id="bilddatum"></td>
                         </tr>  
                     </table>
                 </div>
@@ -70,9 +72,9 @@
                     <caption><p class="ueberschrift">Kategorien:</p></caption>
                     <table width="50%" height="25px" border="1">
                         <tr>
-                            <td>Hund</td>
-                            <td>Süß</td>
-                            <td>Grün</td>
+                            <td id="Kat1"></td>
+                            <td id="Kat2"></td>
+                            <td id="Kat3"></td>
                         </tr>
                     </table>
                 </div>
@@ -100,6 +102,70 @@
             </div>
         </footer>
         <script>
+            function bildladen(){
+                console.log('loading bild details');
+
+                // get id from url parameter
+                var id = -1;
+
+                if (existsUrlParameter('id')) 
+                    id = getUrlParameterValue('id');
+
+                console.log('target picture id=' + id);
+
+                if (id == -1) {
+                    alert('keine id erhalten');
+                    return;
+                }                
+                
+                $.ajax({
+                    url: 'http://localhost:8000/api/bild/' + id,
+                    method: 'get',
+                    contentType: 'application/json; charset=utf-8',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (response) {
+                    console.log(response);
+                    
+                    /* hier können Sie das Produkt nach eigenen Wünschen rendern und ausgeben. Ich mache es mir einfach und gebe nur einen Teil aus */
+
+                    $('#bildname').text(response.BILDNAME);
+                    $('#aufloesung').text(response.AUFLOESUNG);
+                    $('#bildtyp').text(response.BILDTYP);
+                    $('#bilddatum').text(response.DATUM);
+                    $('#BildDatei').html('<img src="../public/' + response.BILDPFAD + '" title="' + response.BILDNAME + '" width="700" height="400" class="bild" alt="Bild">');
+                }).fail(function (jqXHR, statusText, error) {
+                    console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
+                    alert('Ein Fehler ist aufgetreten');
+                });
+            };
+            function KategorieLaden(){
+                 // get id from url parameter
+                    var id = -1;
+
+                    if (existsUrlParameter('id')) 
+                        id = getUrlParameterValue('id');
+
+                    console.log('target picture id=' + id);
+
+                    if (id == -1) {
+                        alert('keine id erhalten');
+                        return;
+                    }      
+                $.ajax({
+                    url: 'http://localhost:8000/api/bildToKategorie/loadKategorieIdbyBildId/' + id,
+                    method: 'get',
+                    contentType: 'application/json; charset=utf-8',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (response) {
+                    console.log(response);
+                    $('#Kat1').text(response[0].BEZEICHNUNG);
+                    $('#Kat2').text(response[1].BEZEICHNUNG);
+                    $('#Kat3').text(response[2].BEZEICHNUNG);
+                });
+
+            };
             document.addEventListener("DOMContentLoaded", init);
                 
                 async function init() { 
@@ -114,6 +180,15 @@
                         document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
                         }
                     }
+                    bildladen();
+                    KategorieLaden();
+                    var SearchBtn = document.querySelector("#searchBtn");
+
+                    SearchBtn.addEventListener("click", async (clickEvent) => {
+                    clickEvent.preventDefault();
+                    var eingang = document.querySelector("#searchTxt").value;
+                    window.open("home.html?kategorie="+eingang.toLowerCase(),"_self");
+                    });
                 }
 
             function getCookie(cname) {
