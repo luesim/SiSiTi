@@ -117,4 +117,51 @@ serviceRouter.get('/benutzer/emailUndPasswort/:email/:passwort', function(reques
     }
 }); 
 
+
+    //Passwort ändern.
+
+    serviceRouter.put('/benutzer/neuesPasswort', function(request, response) { //neue Route machen
+        console.log('Service Benutzer: Client requested update of existing record');
+    
+        var errorMsgs=[];
+        if (helper.isUndefined(request.body.sessionID)) 
+            errorMsgs.push('SessionID fehlt');
+        if (helper.isUndefined(request.body.neuesPW)) 
+            request.body.neuesPW = null;
+           
+        if (errorMsgs.length > 0) {
+            console.log('Service Benutzer: Update not possible, data missing');
+            response.status(400).json({ 'fehler': true, 'nachricht': 'Funktion nicht möglich. Fehlende Daten: ' + helper.concatArray(errorMsgs) });
+            return;
+        }
+    
+        const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
+        try {
+            var obj = benutzerDao.changePasswort(request.body.sessionID, request.body.neuesPW); //muss hier alles geupdated werden oder reicht passwort?
+            console.log('Service Benutzer: Record updated, sesssionID=' + request.body.sessionID);
+            response.status(200).json(obj);
+        } catch (ex) {
+            console.error('Service Benutzer: Error updating record by id. Exception occured: ' + ex.message);
+            response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+        }    
+    });
+
+
+//Konto loeschen
+
+serviceRouter.delete('/benutzer/:id', function(request, response) { //gibt es diese Route?
+    console.log('Service Benutzer: Client requested deletion of record, id=' + request.params.id);
+
+    const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
+    try {
+        var obj = benutzerDao.loadById(request.params.idBenutzer);
+        benutzerDao.delete(request.params.idBenutzer); //Alles gelöscht oder nur ID?
+        console.log('Service Benutzer: Deletion of record successfull, id=' + request.params.id);
+        response.status(200).json({ 'gelöscht': true, 'eintrag': obj });
+    } catch (ex) {
+        console.error('Service Benutzer: Error deleting record. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
 module.exports = serviceRouter;

@@ -26,7 +26,7 @@
                             <a title="BildHochladen" href="hochladen.html" class="link"> <img src="pics/hochladen.png" width="40" height="40" alt="Hochladen"> </a>
                         </td>
                         <td class="symbol" width="1%">
-                            <a title="Anmelden"  id="aAcc" href="SignIn.html" class="link"> <img src="pics/login.png" id="imgAcc" width="40" height="40" alt="Login"> </a>
+                            <a title="MeinProfil"  id="aAcc" href="Profil.html" class="link"> <img src="pics/user.png" id="imgAcc" width="40" height="40" alt="Login"> </a>
                         </td>
                     </tr>
                 </table>
@@ -37,15 +37,17 @@
  
             <div class="profil">
                 <h2>Mein Profil</h2>
-                <h4>Meine Bilder</h4>
-                <p>Bisher wurden noch keine Bilder hochgeladen</p><br>
+                
+                <h4>Konto löschen</h4>
+                <button type="submit" id="kontoLoeschenBtn">Konto löschen</button>
+                <button type="submit" id="abmelden">Benutzer abmelden</button>
                 
                 <h4>Passwort ändern</h4>
                 <form>
-                    <input type="password" class="neuespsw" placeholder="Altes Passwort" name="apsw" required><br>
-                    <input type="password" class="neuespsw" placeholder="Neues Passwort" name="npsw" required><br>   
-                    <input type="password" class="neuespsw" placeholder="Neues Passwort wiederholen" name="npsw2" required><br>
-                    <button type="submit" id="passwordAendernBtn">Passwort ändern</button>
+                     <!-- <input type="password" id="altesPasswdtxt" class="neuespsw" placeholder="Altes Passwort" name="apsw" required><br> !-->
+                     <input type="password" id="neuesPasswdtxt" class="neuespsw" placeholder="Neues Passwort" name="npsw" required><br>   
+                     <!-- <input type="password" id="neuesPasswdWdhtxt" class="neuespsw" placeholder="Neues Passwort wiederholen" name="npsw2" required><br> !-->
+                     <button type="submit" id="passwordAendernBtn">Passwort ändern</button>
                 </form>
             </div>
             
@@ -81,7 +83,73 @@
                         var eingang = document.querySelector("#searchTxt").value;
                         window.open("home.html?kategorie="+eingang.toLowerCase(),"_self");
                         });
+
+                        //Passwort ändern
+                        var saveBtn = document.querySelector("#passwordAendernBtn");
+                        saveBtn.addEventListener("click", async (clickEvent) => {
+                            clickEvent.preventDefault();
+
+                            var neuesPasswort = document.querySelector('#neuesPasswdtxt');
+                            console.log(getCookie(sessionID));                                      
+                            let passwdAendern = {
+                                sessionID: getCookie(sessionID),
+                                neuesPW: neuesPasswort.value                             
+                            };
+                            //console.log(JSON.stringify(passwdAendern));
+                            await passwortAendernDatenbank(passwdAendern);
+                            
+                            });
                     }
+                    async function passwortAendernDatenbank(passwdAendern) {
+                        let requestOptions = {
+                            method: "PUT",
+                            body:JSON.stringify(passwdAendern),
+                            headers: {
+                                "content-type": "application/json"
+                            }
+                        };
+
+                        let response = await fetch("http://localhost:8000/api/benutzer/neuesPasswort", requestOptions);
+                        var abfrage = await response.json();
+                        console.log(abfrage);
+                        if(abfrage.SESSIONID){
+                            alert('Passwort wurde erfolgreich geändert');
+                            window.location = "Profil.html";
+                        }
+                        else{
+                            alert('Es ist ein Fehler aufgetreten');
+                        }
+                    }
+
+                    //Konto löschen
+                    var delBtn = document.querySelector("#kontoLoeschenBtn");
+                    delBtn.addEventListener("click", async (clickEvent) => {
+                        clickEvent.preventDefault();
+            
+                        await kontoLoeschenBeiKlick(kontoLoeschen);
+                        });
+
+                async function kontoLoeschenDatenbank(kontoLoeschen) {
+                    let requestOptions = {
+                        method: "DELETE",
+                        body:JSON.stringify(kontoLoeschen),
+                        headers: {
+                            "content-type": "application/json"
+                        }
+                    };
+
+                    
+                    let response = await fetch("http://localhost:8000/api/benutzer/:id", requestOptions);
+                    var abfrage = await response.json();
+                    console.log(abfrage);
+                    if(abfrage.SESSIONID == null){ 
+                        alert('Ihr Konto und Ihre Bilder wurden gelöscht');
+                        window.location = "Home.html";
+                    }
+                    else{
+                        alert('Ihr Konto konnte nicht gelöscht werden!');
+                    }
+                }
     
                 function getCookie(cname) {
                     let name = cname + "=";
