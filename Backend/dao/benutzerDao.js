@@ -85,6 +85,39 @@ class benutzerDao {
     toString() {
         console.log('benutzerDao [_conn=' + this._conn + ']');
     }
+
+    changePasswort(sessionID, neuespasswort='') { 
+        
+        var sql = 'UPDATE Benutzer SET passwort=? WHERE sessionID=?';
+        var statement = this._conn.prepare(sql);
+        var params = [md5(neuespasswort), sessionID];
+    
+    var result = statement.run(params);
+        console.log(statement.run(params));
+    if (result.changes != 1) 
+        throw new Error('Could not update existing Record. Data: ' + params);
+
+    console.log(this.loadBySessionID(sessionID));
+    return this.loadBySessionID(sessionID);
+    
+}
+    
+
+    delete(id) {
+        try {
+            var sql = 'DELETE FROM Benutzer WHERE id=?'; //Erst Bilder oder geht alles gleichzeitig?
+            var statement = this._conn.prepare(sql);
+            var result = statement.run(id);
+                console.log(statement)
+                console.log(result)
+            if (result.changes != 1) 
+                throw new Error('Could not delete Record by id=' + id);
+
+            return true;
+        } catch (ex) {
+            throw new Error('Could not delete Record by id=' + id + '. Reason: ' + ex.message);
+        }
+    }
 }
 
 module.exports = benutzerDao;
