@@ -161,8 +161,10 @@
                 }).done(function (response) {
                     console.log(response);
                     $('#Kat1').text(response[0].BEZEICHNUNG);
-                    $('#Kat2').text(response[1].BEZEICHNUNG);
-                    $('#Kat3').text(response[2].BEZEICHNUNG);
+                    if(response[1])
+                        $('#Kat2').text(response[1].BEZEICHNUNG);
+                    if(response[2])
+                        $('#Kat3').text(response[2].BEZEICHNUNG);
                 });
 
             };
