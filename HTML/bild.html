@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/basic.css">
         <link rel="stylesheet" type="text/css" href="lib/bild.css">
         <script src="js/urlParameter.js"></script>
-        
+        <script src="js/FileSaver.js"></script>
 	</head>
 	<body>
         <header>
@@ -80,16 +80,14 @@
                 </div>
                 <div class="buttons">
                     <p></p>
-                    <form>
-                        <table width="20%" height="50px" align="center">
-                            <tr>
-                                <!--<td><input type="button" id="zipBtn" value="Zu Zip hinzufügen"></td>-->
-                                    <a id="herunterladenLink" href="" download="">
-                                        Herunterladen
-                                    </a>
-                            </tr>
-                        </table>
-                    </form>
+                    <table width="20%" height="50px" align="center">
+                        <tr>
+                            <input type="button" id="herunterladenBtn" value="Herunterladen">
+                                <!--<a title="Bild" id="herunterladenLink" target="_blank" href="" download>
+                                    Herunterladen
+                                </a>-->
+                        </tr>
+                    </table>
                 </div>
             </section>
         </main>
@@ -136,8 +134,17 @@
                     $('#bildtyp').text(response.BILDTYP);
                     $('#bilddatum').text(response.DATUM);
                     $('#BildDatei').html('<img src="http://localhost:8000/' + response.BILDPFAD + '" title="' + response.BILDNAME + '" width="700" height="400" class="bild" alt="Bild">');
-                    document.getElementById('herunterladenLink').setAttribute('href', 'http://localhost:8000/' + response.BILDPFAD);
-                    document.getElementById('herunterladenLink').setAttribute('download', response.BILDPFAD.split("/")[1]);
+                    
+                    //Bild herunterladen mit Button
+                    var HerunterladenBtn = document.querySelector("#herunterladenBtn");
+
+                    HerunterladenBtn.addEventListener("click", async (clickEvent) => {
+                    saveAs('http://localhost:8000/' + response.BILDPFAD, response.BILDPFAD.split("/")[1]);
+                    });
+
+                    //Bild herunterladen mit link 
+                    //document.getElementById('herunterladenLink').setAttribute('download', response.BILDPFAD.split("/")[1]);
+                    //document.getElementById('herunterladenLink').setAttribute('href', 'http://localhost:8000/' + response.BILDPFAD);
                 }).fail(function (jqXHR, statusText, error) {
                     console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
                     alert('Ein Fehler ist aufgetreten');
@@ -218,8 +225,6 @@
                 var userData = await response.json();
                 return userData;
             }
-
-
         </script>
 	</body>
 </html>
