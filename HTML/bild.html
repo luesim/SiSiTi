@@ -84,7 +84,9 @@
                         <table width="20%" height="50px" align="center">
                             <tr>
                                 <!--<td><input type="button" id="zipBtn" value="Zu Zip hinzufügen"></td>-->
-                                <td><input type="button" id="herunterladenBtn" value="Herunterladen"></td>
+                                    <a id="herunterladenLink" href="" download="">
+                                        Herunterladen
+                                    </a>
                             </tr>
                         </table>
                     </form>
@@ -133,7 +135,9 @@
                     $('#aufloesung').text(response.AUFLOESUNG);
                     $('#bildtyp').text(response.BILDTYP);
                     $('#bilddatum').text(response.DATUM);
-                    $('#BildDatei').html('<img src="../public/' + response.BILDPFAD + '" title="' + response.BILDNAME + '" width="700" height="400" class="bild" alt="Bild">');
+                    $('#BildDatei').html('<img src="http://localhost:8000/' + response.BILDPFAD + '" title="' + response.BILDNAME + '" width="700" height="400" class="bild" alt="Bild">');
+                    document.getElementById('herunterladenLink').setAttribute('href', 'http://localhost:8000/' + response.BILDPFAD);
+                    document.getElementById('herunterladenLink').setAttribute('download', response.BILDPFAD.split("/")[1]);
                 }).fail(function (jqXHR, statusText, error) {
                     console.log('Response Code: ' + jqXHR.status + ' - Fehlermeldung: ' + jqXHR.responseText);
                     alert('Ein Fehler ist aufgetreten');
@@ -179,7 +183,7 @@
                         var benutzerDatenDB = await loadUserFromSessionID(sessionID);
                         if(benutzerDatenDB.IDBENUTZER){
                             document.getElementById("aAcc").setAttribute("href", "Profil.html");
-                        document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
+                            document.getElementById("imgAcc").setAttribute("src", "pics/user.png");
                         }
                     }
                     bildladen();
@@ -214,6 +218,8 @@
                 var userData = await response.json();
                 return userData;
             }
+
+
         </script>
 	</body>
 </html>
