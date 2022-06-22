@@ -150,9 +150,11 @@
                     node.append($('<p>').text('Es existiert kein Bild mit der Kategorie: ' + eingabe ));
                     return;
                 }
+                if(isSearch)
+                    node.append($('<p>').text('Suche: ' + eingabe ));
+                
 
                 node.append($('<p>').text('Anzahl Bilder: ' + response.length));
-                node.append($('<p>').text('Suche: ' + eingabe ));
                 
 
             
@@ -167,7 +169,7 @@
                     tmp += '</a>';
                     tmp += '<section class="searchdesc">';
                     tmp += '<table><tr>';
-                    tmp += '<td><section class="links"><a href="bild.html">' + obj.BILDNAME  + '</a></section></td></tr>';
+                    tmp += '<td><section class="links"><a href="bild.html?id=' + obj.IDBILD + '">' + obj.BILDNAME  + '</a></section></td></tr>';
                     tmp += '<tr><td><section class="links">' + obj.AUFLOESUNG + '</section></td>';
                     tmp += '</tr></table></section>';
                     tmp += '</section>';
