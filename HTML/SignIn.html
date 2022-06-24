@@ -116,8 +116,8 @@
                 }
                 function setCookie(ID){
                     var expires = new Date();
-                    var days = 1
-                    expires.setDate(expires.getTime()+ days)
+                    var days = 1;
+                    expires.setDate(expires.getTime()+ days);
                     document.cookie = "SessionID=" + ID + ";expires=" + expires.toUTCString() + ";"; 
                 }
 
