@@ -118,6 +118,7 @@ class benutzerDao {
             throw new Error('Could not delete Record by id=' + id + '. Reason: ' + ex.message);
         }
     }
+
 }
 
 module.exports = benutzerDao;

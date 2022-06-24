@@ -38,7 +38,7 @@
             <div class="profil">
                 <h2>Mein Profil</h2>
                 
-                <h4>Konto löschen</h4>
+                <h4>Mein Konto</h4>
                 <button type="submit" id="kontoLoeschenBtn">Konto löschen</button>
                 <button type="submit" id="abmelden">Benutzer abmelden</button>
                 
@@ -83,6 +83,24 @@
                         var eingang = document.querySelector("#searchTxt").value;
                         window.open("home.html?kategorie="+eingang.toLowerCase(),"_self");
                         });
+
+                        //Konto abmelden
+                        var delBtn = document.querySelector("#abmelden");
+                        delBtn.addEventListener("click", async (clickEvent) => {
+                            clickEvent.preventDefault();
+
+                         
+
+                        if(deleteCookie("SessionID")){ 
+                            alert('Sie wurden abgemeldet');
+                            window.location = "Home.html";
+                        }
+                        else{
+                            alert('Abmeldung fehlgeschlagen');
+                        }
+                            
+                        });
+                    
 
                         //Passwort ändern
                         var saveBtn = document.querySelector("#passwordAendernBtn");
@@ -150,7 +168,8 @@
                         alert('Ihr Konto konnte nicht gelöscht werden!');
                     }
                 }
-    
+
+                    
                 function getCookie(cname) {
                     let name = cname + "=";
                     let decodedCookie = decodeURIComponent(document.cookie);
@@ -172,6 +191,17 @@
                     var userData = await response.json();
                     return userData;
                 }
+
+                function deleteCookie(name) {
+                    if (getCookie(name)) {
+                        document.cookie = name + '= + ;expires=Thu, 01 Jan 1970 00:00:01 GMT; samesite=lax; secure';
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }   
+
             </script>
 	</body>
 </html>
