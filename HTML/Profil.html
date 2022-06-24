@@ -90,9 +90,9 @@
                             clickEvent.preventDefault();
 
                             var neuesPasswort = document.querySelector('#neuesPasswdtxt');
-                            console.log(getCookie(sessionID));                                      
+                            console.log(getCookie("SessionID"));                                      
                             let passwdAendern = {
-                                sessionID: getCookie(sessionID),
+                                sessionID: getCookie("SessionID"),
                                 neuesPW: neuesPasswort.value                             
                             };
                             //console.log(JSON.stringify(passwdAendern));
