@@ -149,14 +149,14 @@ serviceRouter.get('/benutzer/emailUndPasswort/:email/:passwort', function(reques
 
 //Konto loeschen
 
-serviceRouter.delete('/benutzer/:id', function(request, response) { //gibt es diese Route?
-    console.log('Service Benutzer: Client requested deletion of record, id=' + request.params.id);
+serviceRouter.delete('/benutzer/:id', function(request, response) { 
+    console.log('Service Benutzer: Client requested deletion of record, id=' + request.params.idBenutzer);
 
     const benutzerDao = new BenutzerDao(request.app.locals.dbConnection);
     try {
         var obj = benutzerDao.loadById(request.params.idBenutzer);
-        benutzerDao.delete(request.params.idBenutzer); //Alles gelöscht oder nur ID?
-        console.log('Service Benutzer: Deletion of record successfull, id=' + request.params.id);
+        benutzerDao.delete(request.params.idBenutzer);
+        console.log('Service Benutzer: Deletion of record successfull, idBenutzer=' + request.params.idBenutzer);
         response.status(200).json({ 'gelöscht': true, 'eintrag': obj });
     } catch (ex) {
         console.error('Service Benutzer: Error deleting record. Exception occured: ' + ex.message);

@@ -143,8 +143,12 @@
                     var delBtn = document.querySelector("#kontoLoeschenBtn");
                     delBtn.addEventListener("click", async (clickEvent) => {
                         clickEvent.preventDefault();
-            
-                        await kontoLoeschenBeiKlick(kontoLoeschen);
+                                     
+                        let kontoLoeschen = {
+                            //idBenutzer: getCookie("SessionID"), //Fehler irgendwo bei Abfrage/Übergabe von ID
+                            idBenutzer: loadUserFromSessionID() //Frage ist nur ob über getCookie oder loadUser besser ist
+                        }
+                        await kontoLoeschenDatenbank(kontoLoeschen)
                         });
 
                 async function kontoLoeschenDatenbank(kontoLoeschen) {
@@ -161,7 +165,7 @@
                     var abfrage = await response.json();
                     console.log(abfrage);
                     if(abfrage.SESSIONID == null){ 
-                        alert('Ihr Konto und Ihre Bilder wurden gelöscht');
+                        alert('Ihr Konto wurde gelöscht');
                         window.location = "Home.html";
                     }
                     else{
