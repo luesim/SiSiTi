@@ -19,4 +19,3 @@ und diese am Ende alle zusammen zu Downloaden.
 Die Profil-Seite haben wir etwas abgeändert. 
 Dort gibt es keine Möglichkeit sich seine bisherig hochgeladenen Bilder anzeigen zu lassen.
 
-Wir haben die beste Seite.
