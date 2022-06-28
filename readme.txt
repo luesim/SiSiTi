@@ -6,6 +6,8 @@ admin@admin.com
 Passwort:
 123456
 
+Anmelden geht nur in Firefox.
+
 Alle hochgeladenen Bilder kommen von diesem User.
 
 In der Datenbank muss immer ein Platzhalter-Benutzer vorhanden sein.
@@ -17,4 +19,4 @@ und diese am Ende alle zusammen zu Downloaden.
 Die Profil-Seite haben wir etwas abgeändert. 
 Dort gibt es keine Möglichkeit sich seine bisherig hochgeladenen Bilder anzeigen zu lassen.
 
-Wir haben die geilste Seite.
+Wir haben die beste Seite.
