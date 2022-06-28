@@ -103,19 +103,19 @@ class benutzerDao {
 }
     
 
-    delete(idBenutzer) {
+    delete(idSession) {
         try {
-            var sql = 'DELETE FROM Benutzer WHERE idBenutzer=?'; 
+            var sql = 'DELETE FROM Benutzer WHERE SessionID=?'; 
             var statement = this._conn.prepare(sql);
-            var result = statement.run(idBenutzer);
+            var result = statement.run(idSession);
                 console.log(statement)
                 console.log(result)
             if (result.changes != 1) 
-                throw new Error('Could not delete Record by id=' + idBenutzer);
+                throw new Error('Could not delete Record by id=' + idSession);
 
             return true;
         } catch (ex) {
-            throw new Error('Could not delete Record by id=' + idBenutzer + '. Reason: ' + ex.message);
+            throw new Error('Could not delete Record by id=' + idSession + '. Reason: ' + ex.message);
         }
     }
 

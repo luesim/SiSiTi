@@ -144,33 +144,29 @@
                     delBtn.addEventListener("click", async (clickEvent) => {
                         clickEvent.preventDefault();
                                      
-                        let kontoLoeschen = {
-                            //idBenutzer: getCookie("SessionID"), //Fehler irgendwo bei Abfrage/Übergabe von ID
-                            idBenutzer: loadUserFromSessionID() //Frage ist nur ob über getCookie oder loadUser besser ist
+
+                        var abfrage = await kontoLoeschenDatenbank(getCookie("SessionID"));
+                        if(abfrage.gelöscht == true){ 
+                            alert('Ihr Konto wurde gelöscht');
+                            deleteCookie("SessionID");
+                            window.location = "Home.html";
                         }
-                        await kontoLoeschenDatenbank(kontoLoeschen)
+                        else{
+                            alert('Ihr Konto konnte nicht gelöscht werden!');
+                        }
                         });
 
-                async function kontoLoeschenDatenbank(kontoLoeschen) {
+                async function kontoLoeschenDatenbank(sessionID) {
                     let requestOptions = {
-                        method: "DELETE",
-                        body:JSON.stringify(kontoLoeschen),
-                        headers: {
-                            "content-type": "application/json"
-                        }
+                        method: "DELETE"
+                        
                     };
 
                     
-                    let response = await fetch("http://localhost:8000/api/benutzer/:id", requestOptions);
+                    let response = await fetch("http://localhost:8000/api/benutzer/" + sessionID, requestOptions);
                     var abfrage = await response.json();
                     console.log(abfrage);
-                    if(abfrage.SESSIONID == null){ 
-                        alert('Ihr Konto wurde gelöscht');
-                        window.location = "Home.html";
-                    }
-                    else{
-                        alert('Ihr Konto konnte nicht gelöscht werden!');
-                    }
+                    return abfrage;
                 }
 
                     
