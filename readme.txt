@@ -7,8 +7,8 @@ Passwort:
 123456
 
 Anmelden geht nur in Firefox.
-
 Alle hochgeladenen Bilder kommen von diesem User.
+
 
 In der Datenbank muss immer ein Platzhalter-Benutzer vorhanden sein.
 
